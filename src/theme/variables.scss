@@ -34,13 +34,26 @@ $app-direction: ltr;
 // The "primary" color is the only required color in the map.
 
 $colors: (
-  primary:    #488aff,
+  //primary:    #488aff,
   secondary:  #32db64,
   danger:     #f53d3d,
   light:      #f4f4f4,
-  dark:       #222
+  dark:       #222,
+  // custom app color variables
+  primary-color-dark:   #F57C00,
+  primary:        #FF9800,
+  primary-light:  #FFE0B2,
+  primary-color-text:   #212121,
+  accent-color:         #607D8B,
+  primary-text-color:   #212121,
+  secondary-text-color: #757575,
+  divider-color:        #BDBDBD,
 );
 
+$text-color: color($colors, primary-text-color);
+$list-border-color: color($colors, divider-color);
+$background-color: #fafafa;
+$subdued-text-color: color($colors, secondary-text-color);
 
 // App iOS Variables
 // --------------------------------------------------
@@ -53,8 +66,8 @@ $colors: (
 // --------------------------------------------------
 // Material Design only Sass variables can go here
 
-
-
+$toolbar-md-background: color( $colors, primary-color-dark);
+// $text-input-md-highlight-color-invalid: color( $colors, primary-light);
 
 // App Windows Variables
 // --------------------------------------------------
