@@ -1,0 +1,90 @@
+<ion-split-pane>
+  <ion-header>
+    <ion-toolbar >
+      <ion-searchbar
+        animated
+        [(ngModel)]="searchedWord"
+        (keyup)="onInput($event)"
+      ></ion-searchbar>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-menu [content]="content" id="result-list">
+    <!-- <ion-header>
+      <ion-toolbar>
+        <ion-title>Results</ion-title>
+      </ion-toolbar>
+    </ion-header> -->
+    <ion-content>
+      <ion-list>
+        <!-- result list -->
+        <ion-item detail-none
+          *ngFor="let result of result$ | async"
+          (click)="onSelect(result)"
+          [class.selected]="result === selectedResult"
+        >
+          <h2 class="word">{{result.word}} </h2>
+          <h6 class="kana text-muted">{{result.kana}}</h6>
+          <p>{{result.eng_definition}}</p>
+          <ion-note item-end text-right>
+            <ion-icon name="star"
+              [color]="primary"
+            ></ion-icon>
+            <ion-icon name="md-checkmark-circle"></ion-icon>
+          </ion-note>
+        </ion-item>
+        <button ion-button block class="add-button" icon-left color="accent-color">
+          <ion-icon name="md-add"></ion-icon>
+          add new word
+        </button>
+      </ion-list>
+    </ion-content>
+  </ion-menu>
+
+  <ion-content class="main" #content main padding>
+
+    <ion-grid *ngIf="selectedResult">
+      <!-- detail view header -->
+      <ion-row>
+        <div col-6>
+          <ruby>
+            <h1>{{selectedResult.word}}</h1> <rt>{{selectedResult.kana}}</rt>
+          </ruby>
+        </div>
+        <div col-6>
+          <h1 text-right>{{selectedResult.eng_translation}}</h1>
+        </div>
+      </ion-row>
+      <!-- definitions rows -->
+      <ion-row>
+        <div class="definition" text-wrap padding>
+          {{selectedResult.eng_definition}}
+        </div>
+      </ion-row>
+      <ion-row margin-top>
+        <div class="definition" text-wrap padding>
+          {{selectedResult.definition}}
+        </div>
+      </ion-row>
+      <!-- tags row -->
+      <ion-row>
+        <div class="tags" margin-top text-end padding-right>
+          <ion-chip *ngFor="let tag of selectedResult.tags" margin-left>
+            <ion-label>{{tag}}</ion-label>
+          </ion-chip>
+        </div>
+      </ion-row>
+      <ion-row>
+        <button ion-button outline color="accent-color" class="edit-button" icon-left>
+          <ion-icon name="md-create"></ion-icon>
+          edit
+        </button>
+        <button ion-button outline color="primary" class="edit-button" icon-left>
+          <ion-icon name="md-star"></ion-icon>
+          bookmark
+        </button>
+      </ion-row>
+    </ion-grid>
+
+  </ion-content>
+</ion-split-pane>

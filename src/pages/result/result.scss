@@ -1,0 +1,37 @@
+// ion-searchbar{
+//   width: 300px;
+// }
+
+#result-list{
+  margin-top: 50px;
+}
+
+ion-list .selected{
+  background-color: rgba(94, 125, 155, 0.3);
+}
+
+ion-list a:hover{
+  background-color: rgba(94, 125, 155, 0.1);
+}
+
+
+div.definition{
+  //border-left: 10px orange solid;
+}
+
+div.tags{
+  width: 100vw;
+}
+
+ion-grid{
+  width: 530px;
+  margin: auto;
+}
+
+ion-row{
+  margin-bottom: 20px;
+}
+
+.edit-button, .add-button{
+  margin: auto;
+}
