@@ -1,0 +1,97 @@
+<ion-split-pane >
+  <ion-header>
+   <ion-navbar>
+     <button ion-button menuToggle left>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>
+       Collaboration
+     </ion-title>
+     <!-- collaboration menu -->
+    <ion-buttons end>
+      <button ion-button icon-only large rounded outline color="white" (click)="showUserDetails()">
+        <ion-icon name="md-contact"></ion-icon>
+      </button>
+    </ion-buttons>
+     <!-- End collaboration menu -->
+   </ion-navbar>
+ </ion-header>
+
+ <ion-menu [content]="content" id="menu">
+     <ion-toolbar color="light">
+       <!-- field to add new words -->
+       <ion-item class="add-bar" fixed-top>
+          <ion-input [(ngModel)]="wordToAdd" type="text" placeholder="Add word..." (keyup)="onKeyUp($event)"></ion-input>
+          <button ion-button item-end (click)="addToEditList()">
+            <ion-icon name="md-add"></ion-icon>
+          </button>
+        </ion-item>
+      <!-- /End field to add new words -->
+     </ion-toolbar>
+
+   <ion-content>
+     <!-- editList -->
+     <ion-list>
+       <button class="word-button" ion-item *ngFor="let word of editList" block>
+         {{word}}
+         <ion-icon name="create" item-end color="primary"></ion-icon>
+         <ion-icon name="checkmark" item-end color="primary-light"></ion-icon>
+         <ion-icon name="md-close" (click)="removeFromEditingList(word)" item-end color="secondary-text-color"></ion-icon>
+       </button>
+     </ion-list>
+    <!-- /End editList -->
+   </ion-content>
+ </ion-menu>
+
+
+ <ion-content #content main padding>
+    <form class="edit-form">
+      <ion-list>
+        <ion-item>
+         <ion-label stacked>Word</ion-label>
+         <ion-input type="text"></ion-input>
+       </ion-item>
+       <ion-item>
+        <ion-label stacked>Kana</ion-label>
+        <ion-input type="text"></ion-input>
+      </ion-item>
+        <ion-item>
+         <ion-label stacked>Translation</ion-label>
+         <ion-input type="text"></ion-input>
+       </ion-item>
+       <ion-item>
+         <ion-label stacked>Japanese definition</ion-label>
+         <ion-textarea></ion-textarea>
+       </ion-item>
+       <ion-item>
+         <ion-label stacked>English definition</ion-label>
+         <ion-textarea></ion-textarea>
+       </ion-item>
+       <ion-item>
+         <ion-label>Tags</ion-label>
+         <ion-select multiple="true">
+          <ion-option>Programing</ion-option>
+          <ion-option>Database</ion-option>
+          <ion-option>Network</ion-option>
+          <ion-option>Security</ion-option>
+          <ion-option>Management</ion-option>
+          <ion-option>General</ion-option>
+         </ion-select>
+       </ion-item>
+
+       <ion-item text-end block>
+         <button ion-button icon-left medium color="accent-color" outline>
+           <ion-icon name="arrow-down"></ion-icon>Save Local
+         </button>
+         <button ion-button icon-left medium color="secondary-text-color" outline>
+           <ion-icon name="logo-buffer"></ion-icon>Continue Later
+         </button>
+         <button ion-button icon-left medium color="primary-color-dark" outline>
+           <ion-icon name="heart"></ion-icon>Add to jitt
+         </button>
+       </ion-item>
+      </ion-list>
+    </form>
+ </ion-content>
+
+</ion-split-pane>

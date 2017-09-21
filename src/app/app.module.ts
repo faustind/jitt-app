@@ -9,12 +9,18 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
 import { ResultPage } from '../pages/result/result';
+import { TabsPage } from '../pages/tabs/tabs';
+import { CollaborationPage } from '../pages/collaboration/collaboration';
+import { BookmarkPage } from '../pages/bookmark/bookmark'
 
 @NgModule({
   declarations: [
     MyApp,
     HomePage,
-    ResultPage
+    ResultPage,
+    TabsPage,
+    CollaborationPage,
+    BookmarkPage
   ],
   imports: [
     BrowserModule,
@@ -25,7 +31,10 @@ import { ResultPage } from '../pages/result/result';
   entryComponents: [
     MyApp,
     HomePage,
-    ResultPage
+    ResultPage,
+    TabsPage,
+    CollaborationPage,
+    BookmarkPage
   ],
   providers: [
     StatusBar,

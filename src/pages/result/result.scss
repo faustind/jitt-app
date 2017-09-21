@@ -16,22 +16,13 @@ ion-list a:hover{
 
 
 div.definition{
-  //border-left: 10px orange solid;
-}
-
-div.tags{
-  width: 100vw;
-}
-
-ion-grid{
-  width: 530px;
-  margin: auto;
-}
-
-ion-row{
-  margin-bottom: 20px;
+  border-left: 10px color($colors, accent-color) solid;
 }
 
 .edit-button, .add-button{
   margin: auto;
+}
+
+ion-menu ion-content{
+  margin-top: 53px;
 }

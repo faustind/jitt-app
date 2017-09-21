@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams, MenuController } from 'ionic-angular';
 
 import { Observable } from 'rxjs/Observable'
 import  'rxjs/add/operator/switchMap';
@@ -24,6 +24,7 @@ export class ResultPage {
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
+    public menuCtrl: MenuController,
     private resultsProvider: ResultProvider
   ) { }
 
@@ -35,6 +36,10 @@ export class ResultPage {
 
     //set the first item as selectedResult
     this.result$.subscribe((results: any) => {this.selectedResult = results[0]}).unsubscribe();
+  }
+
+  ionViewDidEnter(){
+    this.menuCtrl.enable(true, 'result-list-menu');
   }
 
   /**
@@ -61,6 +66,10 @@ export class ResultPage {
     if(ev.key == "Enter" && this.searchedWord.trim() !== ''){
       this.getResults(this.searchedWord);
     }
+  }
+
+  showSettings(){
+    console.log("result.showSettings: showing settings");
   }
 
 }
