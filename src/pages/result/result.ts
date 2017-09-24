@@ -72,4 +72,9 @@ export class ResultPage {
     console.log("result.showSettings: showing settings");
   }
 
+  //TODO: import types definitions
+  bookmark(wd: any){
+    wd.isBookmarked = true;
+  }
+
 }

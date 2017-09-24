@@ -1,3 +1,32 @@
-bookmark {
+// ion-searchbar{
+//   width: 300px;
+// }
 
+#result-list{
+  margin-top: 50px;
+}
+
+ion-list .selected{
+  background-color: rgba(94, 125, 155, 0.3);
+}
+
+ion-list a:hover{
+  background-color: rgba(94, 125, 155, 0.1);
+}
+
+
+div.definition{
+  border-left: 10px color($colors, accent-color) solid;
+}
+
+div.comment{
+  border-left: 10px color($colors, secondary-text-color) solid;
+}
+
+.edit-button, .add-button{
+  margin: auto;
+}
+
+ion-menu ion-content{
+  margin-top: 53px;
 }
