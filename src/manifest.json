@@ -1,13 +1,14 @@
 {
-  "name": "Ionic",
-  "short_name": "Ionic",
+  "name": "Japanese IT terminology dictionary",
+  "short_name": "jitt",
   "start_url": "index.html",
   "display": "standalone",
+  "orientation": "landscape",
   "icons": [{
     "src": "assets/imgs/logo.png",
     "sizes": "512x512",
     "type": "image/png"
   }],
-  "background_color": "#4e8ef7",
-  "theme_color": "#4e8ef7"
+  "background_color": "#f57c00",
+  "theme_color": "#ff9800"
 }
