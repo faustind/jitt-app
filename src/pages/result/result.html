@@ -5,10 +5,14 @@
        <ion-icon name="menu"></ion-icon>
      </button>
       <ion-title>Dictionary</ion-title>
+
       <ion-buttons end>
-        <!-- <button ion-button icon-only large color="white" (click)="showSettings()">
-          <ion-icon name="md-cog"></ion-icon>
-        </button> -->
+        <button ion-button icon-only large color="white">
+          <ion-icon name="md-bookmark"></ion-icon>
+        </button>
+        <button ion-button icon-only large color="white">
+          <ion-icon name="md-clipboard"></ion-icon>
+        </button>
       </ion-buttons>
     </ion-navbar>
   </ion-header>
@@ -24,89 +28,19 @@
     </ion-toolbar>
 
     <ion-content>
+      <!-- result list -->
       <ion-list padding-bottom>
-        <!-- result list -->
-        <ion-item detail-none
-          *ngFor="let result of result$ | async"
-          (click)="onSelect(result)"
-          [class.selected]="result === selectedResult"
-        >
-          <h2 class="word">
-            <ruby>
-              <rb>{{result.word}}</rb>
-              <rt>{{result.kana}}</rt>
-            </ruby>
-         </h2>
-          <p color="accent-color">{{result.eng_translation}}</p>
 
-          <!-- result details icons -->
-          <ion-note item-end text-right>
-            <ion-icon name="star"
-              [color]="result.isBookmarked ? 'primary': ''"
-            ></ion-icon>
-            <ion-icon color="primary" name="md-eye"></ion-icon>
-          </ion-note>
-          <!-- /End result details icons -->
-
-        </ion-item>
-        <!-- <ion-item padding-bottom>
-          <button ion-button block class="add-button" icon-left color="accent-color">
-            <ion-icon name="md-add"></ion-icon>
-            add new word
-          </button>
-        </ion-item> -->
+        <!-- TODO: bind this to onSelectWord() -->
+        <word-item *ngFor="let i of [1,2,3,4,5,6,7,8,9]"></word-item>
 
       </ion-list>
+      <!-- end result list -->
     </ion-content>
   </ion-menu>
 
-  <ion-content class="main" #content main padding>
-
-    <ion-list *ngIf="selectedResult" class="details-view">
-      <!-- detail view header -->
-      <ion-item text-justify>
-
-          <ruby inline>
-            <h1>{{selectedResult.word}}</h1> <rt>{{selectedResult.kana}}</rt>
-          </ruby>
-
-          <h1 inline item-end>{{selectedResult.eng_translation}}</h1>
-
-      </ion-item>
-      <!-- definitions rows -->
-      <ion-item>
-        <div class="definition" text-wrap padding>
-          {{selectedResult.eng_definition}}
-        </div>
-      </ion-item>
-      <ion-item margin-top>
-        <div class="definition" text-wrap padding>
-          {{selectedResult.definition}}
-        </div>
-      </ion-item>
-      <!-- tags row -->
-      <ion-item>
-        <div class="tags" padding-right>
-          <ion-chip item-content color="default" *ngFor="let tag of selectedResult.tags" margin-left>
-            <span> {{tag.title}}</span>
-          </ion-chip>
-        </div>
-      </ion-item>
-
-      <ion-item>
-        <ion-buttons end padding-top>
-          <button ion-button outline color="accent-color" class="edit-button" icon-left>
-            <ion-icon name="md-text"></ion-icon>
-            comment
-          </button>
-          <button ion-button outline color="primary" class="edit-button" icon-left (click)="bookmark(selectedResult)">
-            <ion-icon name="md-star"></ion-icon>
-            bookmark
-          </button>
-        </ion-buttons>
-      </ion-item>
-    </ion-list>
-
-
+  <ion-content class="main" #content main>
+    <!-- TODO: pass selectedWord as input parameter to this -->
+    <word-details ></word-details>
   </ion-content>
 </ion-split-pane>

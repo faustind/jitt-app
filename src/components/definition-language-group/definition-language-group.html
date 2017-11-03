@@ -1,0 +1,16 @@
+<ion-item-group>
+  <!-- language block header -->
+  <ion-item-divider color="light">
+    <button ion-button (click)="toggleShow()" clear icon-end color="accent-color">{{title}}<ion-icon [name]="showIcon"></ion-icon></button>
+  </ion-item-divider>
+  <!-- end language block header -->
+
+  <!-- definitions list -->
+  <definition *ngFor="let i of [1,2,3,4]" [hidden]="!showDefinitions" [definition]="content">
+  </definition>
+  <!-- end definitions list -->
+
+  <ion-item text-center>
+    <button ion-button color="secondary-text-color" outline >add your definition</button>
+  </ion-item>
+</ion-item-group>

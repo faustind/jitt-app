@@ -6,7 +6,7 @@ import  'rxjs/add/operator/switchMap';
 import  'rxjs/add/observable/of';
 import  'rxjs/add/operator/take';
 
-import { TAGS } from '../../entities/tag';
+import { TAGS } from '../../entities/mock-data';
 
 import { ResultProvider } from '../../providers/result/result';
 

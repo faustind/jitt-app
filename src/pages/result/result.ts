@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams, MenuController } from 'ionic-angular';
 
+import { ComponentsModule } from '../../components/components.module';
+
 import { Observable } from 'rxjs/Observable'
 import  'rxjs/add/operator/switchMap';
 import  'rxjs/add/observable/of';
@@ -29,13 +31,14 @@ export class ResultPage {
   ) { }
 
   ionViewWillEnter(){
+    //log the word passed by navigation from the homePage
     console.log(this.navParams.get('word'));
 
     this.searchedWord = this.navParams.get('word');
     this.getResults(this.searchedWord);
 
     //set the first item as selectedResult
-    this.result$.subscribe((results: any) => {this.selectedResult = results[0]}).unsubscribe();
+    //this.result$.subscribe((results: any) => {this.selectedResult = results[0]}).unsubscribe();
   }
 
   ionViewDidEnter(){
@@ -47,7 +50,7 @@ export class ResultPage {
   */
   getResults(word: string): any{
     console.log(this.resultsProvider.getResults(word));
-    this.result$ = this.resultsProvider.getResults(word);
+  //  this.result$ = this.resultsProvider.getResults(word);
     console.log(this.result$);
   }
 

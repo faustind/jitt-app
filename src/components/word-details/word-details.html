@@ -1,0 +1,39 @@
+<ion-list>
+  <!-- detail view header -->
+  <ion-item text-justify>
+
+      <ruby inline>
+        <h1>言葉</h1> <rt>ことば</rt>
+      </ruby>
+
+      <h1 inline item-end>Word</h1>
+
+  </ion-item>
+  <!-- end detail view header -->
+
+  <!-- definitions lists -->
+  <ion-item>
+    <definition-language-group [language]="language('EN')"></definition-language-group>
+    <definition-language-group [language]="language('JP')"></definition-language-group>
+  </ion-item>
+  <!-- end definitions lists -->
+
+  <!-- tags row -->
+  <ion-item class="tags">
+    <ion-buttons text-center>
+      <button round small ion-button color="light" margin-left>
+        Network
+      </button>
+      <button  ion-button small round color="light" margin-left>
+        General
+      </button>
+      <button  ion-button small round color="light" margin-left>
+        Security
+      </button>
+      <button ion-button small round color="light" margin-left>
+        Database
+      </button>
+    </ion-buttons>
+  </ion-item>
+  <!-- end tag row -->
+</ion-list>
