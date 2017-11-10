@@ -21,17 +21,11 @@
   <!-- tags row -->
   <ion-item class="tags">
     <ion-buttons text-center>
-      <button round small ion-button color="light" margin-left>
-        Network
-      </button>
-      <button  ion-button small round color="light" margin-left>
-        General
-      </button>
-      <button  ion-button small round color="light" margin-left>
-        Security
-      </button>
-      <button ion-button small round color="light" margin-left>
-        Database
+      <button
+        *ngFor="let tag of word.tags"
+        round small ion-button
+        color="light" margin-left>
+        {{tag.title}}
       </button>
     </ion-buttons>
   </ion-item>
