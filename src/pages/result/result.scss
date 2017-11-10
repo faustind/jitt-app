@@ -6,11 +6,11 @@
 //   margin-top: 50px;
 // }
 
-ion-list .selected{
+word-item.selected .item-inner{
   background-color: rgba(94, 125, 155, 0.3);
 }
 
-ion-list a:hover{
+word-item:hover .item-inner{
   background-color: rgba(94, 125, 155, 0.1);
 }
 

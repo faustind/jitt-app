@@ -6,11 +6,7 @@
   <!-- end language block header -->
 
   <!-- definitions list -->
-  <definition *ngFor="let i of [1,2,3,4]" [hidden]="!showDefinitions" [definition]="content">
+  <definition *ngFor="let definition of definitions" [hidden]="!showDefinitions" [definition]="definition">
   </definition>
   <!-- end definitions list -->
-
-  <ion-item text-center>
-    <button ion-button color="secondary-text-color" outline >add your definition</button>
-  </ion-item>
 </ion-item-group>

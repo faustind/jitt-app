@@ -1,22 +1,19 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
-/**
- * Generated class for the WordItemComponent component.
- *
- * See https://angular.io/api/core/Component for more info on Angular
- * Components.
- */
+import { JittWord } from '../../providers/db/db';
+
 @Component({
   selector: 'word-item',
   templateUrl: 'word-item.html'
 })
 export class WordItemComponent {
 
-  text: string;
+  @Input() word: JittWord;
 
-  constructor() {
-    console.log('Hello WordItemComponent Component');
-    this.text = 'Hello World';
+  constructor() { }
+
+  isBookmarked(): string{
+    return this.word.bookmark ? 'primary': 'divider-color';
   }
 
 }

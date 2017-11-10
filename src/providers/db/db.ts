@@ -116,7 +116,7 @@ export class JittWord {
                   Promise.all(this.jp_definitions.map(def => {def.wordId = this.id; db.jp_definitions.put(def)}))
               ]);
             } catch(err){
-              console.log("couldn't save definitions: "+ err.stac?err.stack:'');
+              console.log("couldn't save definitions: "+ err);
             }
 
             return this.id;

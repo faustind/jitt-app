@@ -2,16 +2,16 @@
 <ion-item>
   <h2>
     <ruby>
-      <rb>言葉</rb>
-      <rt>ことば</rt>
+      <rb>{{word.word}}</rb>
+      <rt>{{word.kana}}</rt>
     </ruby>
  </h2>
-  <p color="accent-color">Word</p>
+  <p color="accent-color">{{word.eng_translation}}</p>
 
   <!-- result details icons -->
   <ion-note item-end text-right>
     <ion-icon name="md-bookmark"
-      color="primary"
+      [color]="isBookmarked()"
     ></ion-icon>
     <!-- <ion-icon color="primary" name="md-checkmark"></ion-icon> -->
   </ion-note>

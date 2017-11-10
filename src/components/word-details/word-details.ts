@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-
+import { Component, Input } from '@angular/core';
+import { JittWord } from '../../providers/db/db'
 /**
  * Generated class for the WordDetailsComponent component.
  *
@@ -12,11 +12,10 @@ import { Component } from '@angular/core';
 })
 export class WordDetailsComponent {
 
-  text: string;
+  @Input() word: JittWord;
 
   constructor() {
     console.log('Hello WordDetailsComponent Component');
-    this.text = 'Hello World';
   }
 
   language(lang: string){

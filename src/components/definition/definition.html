@@ -3,12 +3,12 @@
   <ion-note item-left >
     <button ion-button clear icon-start color="divider-color">
       <ion-icon name="md-thumbs-up"></ion-icon>
-      <ion-badge color="divider-color">333</ion-badge>
+      <ion-badge color="divider-color">{{definition.popularity || ''}}</ion-badge>
     </button>
   </ion-note>
   <!-- end ranking details -->
   <div text-wrap>
-     {{content}}
+     {{definition.content}}
   </div>
-  <p margin-top color="secondary-text-color"> <b>source:</b> src.atsource.jitt</p>
+  <p margin-top color="secondary-text-color"> <b>source:</b>{{definition.source || ''}}</p>
 </ion-item>

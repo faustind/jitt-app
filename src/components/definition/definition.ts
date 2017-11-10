@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import {IDefinition } from '../../providers/db/db';
 
 /**
  * Generated class for the DefinitionComponent component.
@@ -12,16 +13,14 @@ import { Component, Input, OnInit } from '@angular/core';
 })
 export class DefinitionComponent implements OnInit{
 
-  //TODO: change type to IDefinition
-  @Input() definition: any;
-  content: string;
+
+  @Input() definition: IDefinition;
 
   constructor() {
     console.log('Hello DefinitionComponent Component');
   }
 
   ngOnInit(){
-    this.content = this.definition;
   }
 
 }
