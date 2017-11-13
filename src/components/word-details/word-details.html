@@ -1,0 +1,39 @@
+<ion-list>
+  <!-- detail view header -->
+  <ion-item text-justify>
+
+      <ruby inline>
+        <h1>{{word.word}}</h1> <rt>{{word.kana}}</rt>
+      </ruby>
+
+      <h1 inline item-end>{{word.eng_translation}}</h1>
+
+  </ion-item>
+  <!-- end detail view header -->
+
+  <!-- definitions lists -->
+  <ion-item>
+    <definition-language-group [language]="language('EN')" [definitions]="word.eng_definitions"></definition-language-group>
+    <definition-language-group [language]="language('JP')" [definitions]="word.jp_definitions"></definition-language-group>
+  </ion-item>
+  <!-- end definitions lists -->
+
+  <!-- tags row -->
+  <ion-item class="tags">
+    <ion-buttons text-center>
+      <button
+        *ngFor="let tag of word.tags"
+        round small ion-button
+        color="light" margin-left>
+        {{tag.title}}
+      </button>
+    </ion-buttons>
+  </ion-item>
+  <!-- end tag row -->
+
+
+    <!-- <ion-item text-center>
+      <button ion-button color="secondary-text-color" outline >add your definition</button>
+    </ion-item> -->
+
+</ion-list>

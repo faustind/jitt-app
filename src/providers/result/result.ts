@@ -5,19 +5,19 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/map';
 
-import { IJittWord } from '../../entities/word'
-import { WORDS } from './words-mock';
+import { JittWord } from '../db/db'
 
-/*
-  Generated class for the ResultProvider provider.
 
-  See https://angular.io/guide/dependency-injection for more info on providers
-  and Angular DI.
-*/
+const WORDS: JittWord[] = [
+  new JittWord("職務分掌","しょくむぶんしょう","Segregation of duties"),
+  new JittWord("下位互換","かいごかん","Backward compatibility"),
+  new JittWord("解像度","かいぞうど","Resolution")
+]
+
 @Injectable()
 export class ResultProvider {
 
-  words: IJittWord[] = WORDS;
+  words: JittWord[];
 
   constructor(public http: Http) {
     console.log('Hello ResultProvider Provider');
@@ -26,17 +26,9 @@ export class ResultProvider {
   /**
   * return observable of results for the word in parameter
   */
-  getResults(word: string){
+  getResults(word: string): Observable<JittWord[]>{
     console.log("resultProvider: fetching results...");
-    // filter those word, translation, definitions contains the given word
-    return Observable.of(this.words.filter((wordMock: IJittWord) => {
-      return (
-        wordMock.word.includes(word) ||
-        wordMock.eng_translation.includes(word) ||
-        wordMock.definition.includes(word) ||
-        wordMock.eng_definition.includes(word)
-      )
-    }));
+    return Observable.of(WORDS);
   }
 
 }

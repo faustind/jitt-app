@@ -1,0 +1,12 @@
+<ion-item-group>
+  <!-- language block header -->
+  <ion-item-divider color="light">
+    <button ion-button (click)="toggleShow()" clear icon-end color="accent-color">{{title}}<ion-icon [name]="showIcon"></ion-icon></button>
+  </ion-item-divider>
+  <!-- end language block header -->
+
+  <!-- definitions list -->
+  <definition *ngFor="let definition of definitions" [hidden]="!showDefinitions" [definition]="definition">
+  </definition>
+  <!-- end definitions list -->
+</ion-item-group>

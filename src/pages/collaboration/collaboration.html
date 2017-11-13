@@ -16,7 +16,7 @@
       </button>
 
       <button ion-button icon-only large rounded outline color="white" (click)="showUserDetails()">
-        <ion-icon name="md-contact"></ion-icon>
+        <ion-icon name="md-information-circle"></ion-icon>
       </button>
     </ion-buttons>
      <!-- End collaboration menu -->
@@ -27,7 +27,7 @@
      <ion-toolbar color="light">
        <!-- field to add new words -->
        <ion-item class="add-bar" fixed-top>
-          <ion-input [(ngModel)]="wordAdd" type="text" placeholder="Add word..." (keyup)="onKeyUp($event)"></ion-input>
+          <ion-input [(ngModel)]="inputWord" type="text" placeholder="Add word..." (keyup)="onKeyUp($event)"></ion-input>
           <button ion-button item-end (click)="addToEditList()">
             <ion-icon name="md-add"></ion-icon>
           </button>
@@ -50,7 +50,7 @@
            <ion-icon name="create" item-end color="primary"></ion-icon>
            <ion-icon name="checkmark" item-end color="primary-light"></ion-icon>
          -->
-         <ion-icon name="md-close" (click)="removeFromEditingList(editWord)" item-end color="secondary-text-color"></ion-icon>
+         <ion-icon name="md-close" (click)="confirmRemoval(editWord)" item-end color="secondary-text-color"></ion-icon>
        </button>
      </ion-list>
     <!-- /End editList -->
@@ -59,61 +59,7 @@
 
 
  <ion-content #content main padding>
-    <form class="edit-form" *ngIf="editingWord" [formGroup]="wordForm">
-      <ion-list>
-        <ion-item>
-         <ion-label stacked>Word</ion-label>
-         <ion-input type="text" formControlName="word"></ion-input>
-       </ion-item>
-       <ion-item>
-        <ion-label stacked>Kana</ion-label>
-        <ion-input type="text" formControlName="kana"></ion-input>
-      </ion-item>
-        <ion-item>
-         <ion-label stacked>Translation</ion-label>
-         <ion-input type="text" formControlName="eng_translation"></ion-input>
-       </ion-item>
-       <ion-item>
-         <ion-label stacked>Japanese definition</ion-label>
-         <ion-textarea formControlName="definition"></ion-textarea>
-       </ion-item>
-       <ion-item>
-         <ion-label stacked>English definition</ion-label>
-         <ion-textarea  formControlName="eng_definition"></ion-textarea>
-       </ion-item>
-       <!-- Tags -->
-       <ion-item>
-         <ion-label>Tags</ion-label>
-         <ion-select multiple="true" formControlName="tags">
-          <ion-option *ngFor="let tag of TAGS" [value]="tag">{{tag.title}}</ion-option>
-         </ion-select>
-       </ion-item>
-       <!-- /End Tags -->
-
-       <ion-item text-end block>
-         <!-- Save local button -->
-         <button ion-button icon-left medium
-          color="accent-color" outline
-          (click)="onSaveLocal()">
-           <ion-icon name="arrow-down"></ion-icon>Save Local
-         </button>
-
-         <!-- Continue later button -->
-         <button ion-button icon-left medium
-           color="secondary-text-color" outline
-           (click)="onContinueLater()"
-          >
-           <ion-icon name="logo-buffer"></ion-icon>Continue Later
-         </button>
-
-         <!-- Add to jitt button -->
-         <button ion-button icon-left medium color="primary-color-dark" outline
-         (click)="onAddToJitt()">
-           <ion-icon name="heart"></ion-icon>Add to jitt
-         </button>
-       </ion-item>
-      </ion-list>
-    </form>
+    <word-form *ngIf="editingWord || editList[0]" [wordInput]="editingWord || editList[0]" (onUpdatedWordInput)="onUpdatedWordInput($event)"></word-form>
  </ion-content>
 
 </ion-split-pane>
