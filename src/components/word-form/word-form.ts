@@ -37,7 +37,7 @@ export class WordFormComponent implements OnChanges{
     this.wordForm = this.fb.group({
       word: '',
       kana: '',
-      eng_translation: '',
+      translation: '',
       definitions: this.fb.array([]),
       tags: [],
     })
@@ -47,11 +47,11 @@ export class WordFormComponent implements OnChanges{
     this.wordForm.reset({
       word: this.wordInput.word || '',
       kana: this.wordInput.kana || '',
-      eng_translation: this.wordInput.eng_translation || '',
+      translation: this.wordInput.translation || '',
     })
     this.wordForm.get('tags').setValue(this.wordInput.tags || [])
-    if(this.wordInput.eng_definitions || this.wordInput.jp_definitions){
-      const dfs = this.wordInput.eng_definitions.concat(this.wordInput.jp_definitions)
+    if(this.wordInput.definitions){
+      const dfs = this.wordInput.definitions
       this.setDefinitions(dfs)
     }
   }
@@ -114,24 +114,17 @@ export class WordFormComponent implements OnChanges{
       (tag) => { return Object.assign({}, tag)}
     );
 
-    const engDefinitionsDeepCopy: IDefinition[] = wordFormValue.definitions.filter(
-      definition => {return definition.language.includes("english")}
-    );
-    const jpDefinitionsDeepCopy: IDefinition[] = wordFormValue.definitions.filter(
-      definition => {return definition.language.includes("japanese")}
-    );
+    const definitionsDeepCopy: IDefinition[] = wordFormValue.definitions;
+
 
     console.log(tagsDeepCopy);
 
-    const persistWord = new JittWord(
-      wordFormValue.word as string,
-      wordFormValue.kana as string,
-      wordFormValue.eng_translation as string
-    );
+    const persistWord = new JittWord();
+    persistWord.word = wordFormValue.word as string,
+    persistWord.kana = wordFormValue.kana as string,
+    persistWord.translation = wordFormValue.eng_translation as string
 
-    //TODO: add source field to FormGroup
-    persistWord.jp_definitions = persistWord.jp_definitions.concat(jpDefinitionsDeepCopy);
-    persistWord.eng_definitions =  persistWord.eng_definitions.concat(engDefinitionsDeepCopy);
+    persistWord.definitions = persistWord.definitions.concat(definitionsDeepCopy);
     persistWord.tags = persistWord.tags.concat(tagsDeepCopy);
 
     return persistWord;
@@ -151,9 +144,9 @@ export class WordFormComponent implements OnChanges{
   onContinueLater(){
     let toSave = this.preparePersistWord();
     toSave.edit = true;
-    toSave.save()
-      .then(id => this.presentToast(`You successfuly added ${toSave.word} to your stack`))
-      .catch( err => console.log("error while saving word" + err) );
+    // toSave.save()
+    //   .then(id => this.presentToast(`You successfuly added ${toSave.word} to your stack`))
+    //   .catch( err => console.log("error while saving word" + err) );
   }
 
   /**
@@ -173,9 +166,9 @@ export class WordFormComponent implements OnChanges{
   onSaveLocal(){
     let toSave = this.preparePersistWord();
     toSave.local = true;
-    toSave.save()
-      .then(id => this.presentToast(`You successfuly saved ${toSave.word} to your dictionary`))
-      .catch( err => console.log("error while saving word" + err) );
+    // toSave.save()
+    //   .then(id => this.presentToast(`You successfuly saved ${toSave.word} to your dictionary`))
+    //   .catch( err => console.log("error while saving word" + err) );
   }
 
   presentToast(message: string){

@@ -10,16 +10,16 @@ import  'rxjs/add/observable/of';
 import  'rxjs/add/operator/take';
 
 
-import { ResultProvider } from '../../providers/result/result';
+import { ApiProvider } from '../../providers/api/api.provider';
 
 @Component({
   selector: 'page-result',
   templateUrl: 'result.html',
-  providers: [ ResultProvider ]
+  providers: [ ApiProvider ]
 })
 export class ResultPage {
 
-  private result$: Observable<JittWord[]>;
+  private results: JittWord[];
   private selectedResult: JittWord;
   private searchedWord: string;
 
@@ -27,7 +27,7 @@ export class ResultPage {
     public navCtrl: NavController,
     public navParams: NavParams,
     public menuCtrl: MenuController,
-    private resultsProvider: ResultProvider
+    private apiProvider: ApiProvider
   ) { }
 
   ionViewWillEnter(){
@@ -50,8 +50,10 @@ export class ResultPage {
   */
   getResults(word: string): any{
     // console.log(this.resultsProvider.getResults(word));
-    this.result$ = this.resultsProvider.getResults(word);
-    console.log(this.result$);
+    this.apiProvider.getResults(word).then(
+      results => this.results = results
+    );
+    console.log(this.results);
   }
 
   /**

@@ -8,7 +8,7 @@ import  'rxjs/add/operator/take';
 
 import { TAGS } from '../../entities/mock-data';
 
-import { ResultProvider } from '../../providers/result/result';
+import { ApiProvider } from '../../providers/api/api.provider';
 
 /**
  * Generated class for the BookmarkComponent component.

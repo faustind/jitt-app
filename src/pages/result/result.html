@@ -34,7 +34,7 @@
       <!-- result list -->
       <ion-list padding-bottom>
           <word-item
-            *ngFor="let wd of result$ | async"
+            *ngFor="let wd of results"
             [class.selected]="wd === selectedResult"
             [word]='wd'
             (click)="onSelectWord(wd)">

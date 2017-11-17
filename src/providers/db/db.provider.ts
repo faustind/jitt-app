@@ -47,7 +47,7 @@ export class dbProvider {
   */
    saveToLocals(word: JittWord){
       word.local = true;
-      return word.save();
+      // return word.save();
   }
 
 
