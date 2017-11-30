@@ -1,9 +1,11 @@
 <ion-item>
   <!-- ranking details-->
   <ion-note item-left >
-    <button ion-button clear icon-start color="divider-color">
+    <button ion-button clear
+     icon-start [color]="definition.liked?'accent-color':'divider-color'"
+      (click)="onLike()">
       <ion-icon name="md-thumbs-up"></ion-icon>
-      <ion-badge color="divider-color">{{definition.likes || '0'}}</ion-badge>
+      <ion-badge [color]="definition.liked?'accent-color':'divider-color'">{{definition.likes || '0'}}</ion-badge>
     </button>
   </ion-note>
   <!-- end ranking details -->

@@ -1,0 +1,30 @@
+<ion-content padding>
+  <h2 text-center>Write your definition for {{word.word}}</h2>
+  <ion-list>
+    <ion-item>
+       <ion-label stacked>Content</ion-label>
+       <ion-input type="text" [(ngModel)]="def.content" name="content"></ion-input>
+    </ion-item>
+
+    <ion-item>
+       <ion-label stacked>Source</ion-label>
+       <ion-input type="text" [(ngModel)]="def.source" name="source"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label><small>Language</small></ion-label>
+      <ion-select multiple="false" name="language" [(ngModel)]="def.language">
+       <ion-option value="english">English</ion-option>
+       <ion-option value="japanese">日本語</ion-option>
+      </ion-select>
+    </ion-item>
+  <ion-item text-right>
+    <button (click)="onCancelDefinition()" ion-button type="button" color="divider-color" outline>
+      cancel
+    </button>
+    <button (click)="onSaveDefinition()" ion-button type="button" color="accent-color" outline>
+      save definition
+    </button>
+  </ion-item>
+  </ion-list>
+</ion-content>

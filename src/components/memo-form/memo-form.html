@@ -1,0 +1,27 @@
+<ion-content padding>
+  <h1 color="accent-color" text-center>Memo for {{word.word}}</h1>
+ <form>
+   <ion-list>
+
+     <ion-item>
+       <ion-label stacked>Memo</ion-label>
+       <ion-textarea name="memoContent"
+         [(ngModel)]="memo.content"
+         placeholder="Write your memo..." rows="6" autofocus
+         ></ion-textarea>
+     </ion-item>
+
+     <ion-item text-end block>
+       <button ion-button icon-left medium color="divider-color" outline
+       (click)="onCancelMemo()">
+         <ion-icon name="md-close"></ion-icon>Cancel
+       </button>
+       <button ion-button icon-left medium color="primary-color-dark" outline
+       (click)="onSaveMemo()">
+         <ion-icon name="md-arrow-down"></ion-icon>Save Memo
+       </button>
+
+     </ion-item>
+   </ion-list>
+ </form>
+</ion-content>

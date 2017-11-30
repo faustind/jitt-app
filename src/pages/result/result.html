@@ -7,13 +7,16 @@
       <ion-title>Dictionary</ion-title>
 
       <ion-buttons end>
-        <button ion-button icon-only large color="white">
+        <button ion-button icon-only large color="white"
+          (click)="toogleBookmark()">
           <ion-icon name="md-bookmark"></ion-icon>
         </button>
-        <button ion-button icon-only large color="white">
+        <button ion-button icon-only large color="white"
+         (click)="showMemoForm()">
           <ion-icon name="md-clipboard"></ion-icon>
         </button>
-        <button ion-button icon-only large color="white">
+        <button ion-button icon-only large color="white"
+          (click)="showDefinitionForm()">
           <ion-icon name="md-add"></ion-icon>
         </button>
       </ion-buttons>

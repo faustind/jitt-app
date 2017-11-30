@@ -7,6 +7,8 @@ import { DefinitionComponent } from './definition/definition';
 import { DefinitionLanguageGroupComponent } from './definition-language-group/definition-language-group';
 import { WordDetailsComponent } from './word-details/word-details';
 import { WordFormComponent } from './word-form/word-form';
+import { MemoFormComponent } from './memo-form/memo-form';
+import { DefinitionFormComponent } from './definition-form/definition-form';
 
 
 @NgModule({
@@ -15,14 +17,18 @@ import { WordFormComponent } from './word-form/word-form';
     DefinitionComponent,
     DefinitionLanguageGroupComponent,
     WordDetailsComponent,
-    WordFormComponent],
+    WordFormComponent,
+    MemoFormComponent,
+    DefinitionFormComponent],
 	imports: [ IonicModule, ReactiveFormsModule ],
 	exports: [
     WordItemComponent,
     DefinitionComponent,
     DefinitionLanguageGroupComponent,
     WordDetailsComponent,
-    WordFormComponent
+    WordFormComponent,
+    MemoFormComponent,
+    DefinitionFormComponent
   ]
 })
 export class ComponentsModule {}

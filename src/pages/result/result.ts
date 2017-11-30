@@ -1,16 +1,16 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, MenuController } from 'ionic-angular';
+import { NavController, NavParams, MenuController, ModalController, ToastController } from 'ionic-angular';
 
-import {JittWord } from '../../providers/db/db';
-import { ComponentsModule } from '../../components/components.module';
+import { JittWord } from '../../providers/db/db';
 
-import { Observable } from 'rxjs/Observable'
-import  'rxjs/add/operator/switchMap';
+import { MemoFormComponent } from '../../components/memo-form/memo-form';
+import { DefinitionFormComponent } from '../../components/definition-form/definition-form';
 import  'rxjs/add/observable/of';
 import  'rxjs/add/operator/take';
 
 
 import { ApiProvider } from '../../providers/api/api.provider';
+import { dbProvider } from '../../providers/db/db.provider'
 
 @Component({
   selector: 'page-result',
@@ -27,7 +27,10 @@ export class ResultPage {
     public navCtrl: NavController,
     public navParams: NavParams,
     public menuCtrl: MenuController,
-    private apiProvider: ApiProvider
+    public modalCtrl: ModalController,
+    public toastCtrl: ToastController,
+    private apiProvider: ApiProvider,
+    private db: dbProvider
   ) { }
 
   ionViewWillEnter(){
@@ -50,10 +53,33 @@ export class ResultPage {
   */
   getResults(word: string): any{
     // console.log(this.resultsProvider.getResults(word));
-    this.apiProvider.getResults(word).then(
-      results => this.results = results
-    );
-    console.log(this.results);
+      this.apiProvider.getResults(word).then(
+        // if a word in results is in db, use it as a
+        // replacement for the result from server
+        // TODO: if the one from server is more recent, save it.
+        results => results.forEach((result, index, results) => {
+            this.db.find(result.word).then(inDb => {
+              // For now, only one match is returned per word from the dbProvider.
+              // Because, of the unique constraint on db.words.word and full match search
+              inDb[0].loadDefinitions();
+              results[index] = inDb[0];
+            });
+
+          this.results = results;
+
+          // set memos if any
+          this.results.forEach(result => {
+            this.db.getMemo(result.word_id)
+            .then(memo => {
+               if (memo){ result.memo = memo.content; }
+            })
+          })
+
+        })
+      ).catch(err => {
+        // TODO: Inform user that no match was found for his word
+        console.log("Error :" + err);
+      });
   }
 
   /**
@@ -68,22 +94,74 @@ export class ResultPage {
   */
   onInput(ev){
     // if "Enter" key is pressed
-    if(ev.key == "Enter" && this.searchedWord.trim() !== ''){
-      this.getResults(this.searchedWord);
+    if(ev.key == "Enter" &&
+      this.searchedWord && this.searchedWord.trim().length > 2
+    ){
+      this.getResults(this.searchedWord.trim());
     }
   }
 
-  showSettings(){
-    console.log("result.showSettings: showing settings");
+  /**
+   * Bookmarks the selectedResult and save it to the local db
+  */
+  toogleBookmark(){
+    if(this.selectedResult){
+      if (!this.selectedResult.bookmark){
+        this.selectedResult.bookmark = true;
+        this.selectedResult.save();
+      } else {
+        this.selectedResult.bookmark = false;
+        this.selectedResult.save();
+      }
+    }
   }
 
-  //TODO: import types definitions
-  bookmark(wd: any){
-    wd.isBookmarked = true;
+  showMemoForm(){
+    if(this.selectedResult){
+      let memoModal = this.modalCtrl.create(MemoFormComponent, { word: this.selectedResult });
+
+      memoModal.onDidDismiss(memo => {
+        if (memo && memo.content.length > 0){
+          console.log('memo saved ' + JSON.stringify(memo));
+          this.selectedResult.memo = memo.content;
+          this.presentToast("Your memo has been successfuly saved !");
+        } else { console.log('Memo has not been saved.') }
+      });
+      memoModal.present();
+
+    } else {
+      console.log('No word selected');
+    }
+  }
+  showDefinitionForm(){
+    if(this.selectedResult){
+      let definitionModal = this.modalCtrl.create(DefinitionFormComponent, { word: this.selectedResult });
+
+      definitionModal.onDidDismiss(definition => {
+        if (definition && definition.defId){
+          console.log('definition as been saved on jitt');
+          this.selectedResult.definitions.push(definition);
+          this.presentToast("Thank you for your contribution !");
+        } else { console.log('Definition has not been saved.') }
+      });
+      definitionModal.present();
+
+    } else {
+      console.log('No word selected');
+    }
   }
 
   compareFn(wd: JittWord): boolean{
     return wd && this.selectedResult ? wd.word === this.selectedResult.word : wd === this.selectedResult;
+  }
+
+  presentToast(message: any){
+    let toast = this.toastCtrl.create({
+      message: message,
+      duration: 2000,
+      position: 'bottom'
+    });
+    toast.present();
   }
 
 }

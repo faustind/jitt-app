@@ -32,8 +32,10 @@
   <!-- end tag row -->
 
 
-    <!-- <ion-item text-center>
-      <button ion-button color="secondary-text-color" outline >add your definition</button>
-    </ion-item> -->
+     <ion-item end *ngIf="word.memo">
+      <div>
+        {{word.memo}}
+      </div>
+     </ion-item>
 
 </ion-list>

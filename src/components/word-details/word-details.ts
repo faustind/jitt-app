@@ -23,10 +23,13 @@ export class WordDetailsComponent {
   }
 
   selectedWordDefs(lang: string){
-    if(lang == 'EN'){
-      return this.word.definitions.filter(def => def.language == 'english')
-    } else {
-      return this.word.definitions.filter(def => def.language == 'japanese')
+
+    if (this.word.definitions && this.word.definitions.length > 0){
+      if(lang == 'EN'){
+        return this.word.definitions.filter(def => def.language == 'english')
+      } else {
+        return this.word.definitions.filter(def => def.language == 'japanese')
+      }
     }
   }
 

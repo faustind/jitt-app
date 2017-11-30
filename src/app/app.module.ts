@@ -23,6 +23,10 @@ import { LocalSettingsPage } from '../pages/settings/local/local';
 import { ContribSettingsPage } from '../pages/settings/contrib/contrib';
 import { AboutPage } from '../pages/about/about';
 
+import { MemoFormComponent } from '../components/memo-form/memo-form';
+import { DefinitionFormComponent } from '../components/definition-form/definition-form';
+
+
 @NgModule({
   declarations: [
     MyApp,
@@ -55,7 +59,9 @@ import { AboutPage } from '../pages/about/about';
     ContribSettingsPage,
     LocalSettingsPage,
     SearchSettingsPage,
-    AboutPage
+    AboutPage,
+    MemoFormComponent,
+    DefinitionFormComponent
   ],
   providers: [
     StatusBar,
