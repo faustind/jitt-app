@@ -139,17 +139,6 @@ export class WordFormComponent implements OnChanges{
   }
 
   /**
-  * save the word for continued edition
-  */
-  onContinueLater(){
-    let toSave = this.preparePersistWord();
-    toSave.edit = true;
-    // toSave.save()
-    //   .then(id => this.presentToast(`You successfuly added ${toSave.word} to your stack`))
-    //   .catch( err => console.log("error while saving word" + err) );
-  }
-
-  /**
    * submit the word to the jitt server
   */
   onSubmit(){
