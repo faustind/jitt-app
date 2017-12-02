@@ -31,8 +31,18 @@ export class ApiProvider {
   /** @return \JittWord[] */
   getAllWords(){}
 
-  likeDefinition(defId: number){
-    return this.http.get(api.host + api.likeDefinitionUrl + defId)
+  /**
+  * Increments the likes of definition with id defId on server
+  * If unlike is set to true, definition.likes will be decremented.
+  * @param int defId server id of the definition
+  * @param boolean unlike, defaults to false
+  * @return IDefinition
+  */
+  likeDefinition(defId: number, unlike = false){
+    let url = api.host + api.likeDefinitionUrl + defId;
+    url += unlike ? "/true" : "";
+
+    return this.http.get(url)
     .toPromise()
     .then(response => {return response.json().data.definition as IDefinition})
   }
