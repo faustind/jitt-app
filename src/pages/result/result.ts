@@ -69,11 +69,12 @@ export class ResultPage {
             })
             .catch(err => console.log(err)); // do nothing
             result.loadMemo();
+            result.orderDefinitions();
           })
         this.results = results;
       })
       .catch(err => {
-        // TODO: look for partial matches in local db for the searchedWord        
+        // TODO: look for partial matches in local db for the searchedWord
         // TODO: Inform user that no match was found for his word
         console.log("Error :" + err);
       });

@@ -148,6 +148,20 @@ export class JittWord implements IJittWord{
           .toArray(defs => this.definitions = defs)
     }
 
+    orderDefinitions(){
+      this.definitions.sort(this.compareDefinitions);
+    }
+
+    private compareDefinitions(def1, def2){
+      if (def1.likes > def2.likes) {
+          return 1; // def1 comes first
+      } else if (def1.likes > def2.likes){
+          return -1; // def2 comes first
+      } else {
+        return 0; // relative order of def1 and def2 unchanged
+      }
+    }
+
     loadMemo(){
       return db.memos
       .where('word_id')
