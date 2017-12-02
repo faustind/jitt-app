@@ -53,30 +53,27 @@ export class ResultPage {
   */
   getResults(word: string): any{
     // console.log(this.resultsProvider.getResults(word));
-      this.apiProvider.getResults(word).then(
+      this.apiProvider.getResults(word)
+      .then(
         // if a word in results is in db, use it as a
         // replacement for the result from server
-        // TODO: if the one from server is more recent, save it.
-        results => results.forEach((result, index, results) => {
-            this.db.find(result.word).then(inDb => {
+        (results) => {
+          results.forEach((result, index, results) => {
+            this.db.find(result.word)
+            .then(inDb => {
+              // TODO: if found update local with changes from server.
               // For now, only one match is returned per word from the dbProvider.
               // Because, of the unique constraint on db.words.word and full match search
               inDb[0].loadDefinitions();
-              results[index] = inDb[0];
-            });
-
-          this.results = results;
-
-          // set memos if any
-          this.results.forEach(result => {
-            this.db.getMemo(result.word_id)
-            .then(memo => {
-               if (memo){ result.memo = memo.content; }
+              result = inDb[0];
             })
+            .catch(err => console.log(err)); // do nothing
+            result.loadMemo();
           })
-
-        })
-      ).catch(err => {
+        this.results = results;
+      })
+      .catch(err => {
+        // TODO: look for partial matches in local db for the searchedWord        
         // TODO: Inform user that no match was found for his word
         console.log("Error :" + err);
       });

@@ -4,7 +4,6 @@ export class AppDatabase extends Dexie {
 
   words: Dexie.Table<JittWord, number>;
   definitions: Dexie.Table<IDefinition, number>;
-  eng_definitions: Dexie.Table<IDefinition, number>;
   tags: Dexie.Table<ITag, number>;
   memos: Dexie.Table<IMemo, number>;
 
@@ -149,8 +148,17 @@ export class JittWord implements IJittWord{
           .toArray(defs => this.definitions = defs)
     }
 
+    loadMemo(){
+      return db.memos
+      .where('word_id')
+      .equals(this.word_id)
+      .first( memo => {
+        this.memo = memo.content;
+      });
+    }
+
     removeFromLocalDb(){
-      
+
     }
 
 }
