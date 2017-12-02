@@ -153,10 +153,10 @@ export class JittWord implements IJittWord{
     }
 
     private compareDefinitions(def1, def2){
-      if (def1.likes > def2.likes) {
-          return 1; // def1 comes first
-      } else if (def1.likes > def2.likes){
-          return -1; // def2 comes first
+      if (parseInt(def1.likes) > parseInt(def2.likes)) {
+          return -1; // def1 comes first
+      } else if (parseInt(def1.likes) < parseInt(def2.likes)){
+          return 1; // def2 comes first
       } else {
         return 0; // relative order of def1 and def2 unchanged
       }
