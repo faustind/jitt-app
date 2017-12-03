@@ -5,10 +5,11 @@
 
 
 export const api = {
-  "host": "http://localhost:8000/api",
+  "host": "http://192.168.43.120:8000/api",
   "allWordsUrl": "/words",
   "matchWordUrl": "/words/match/",
   "likeDefinitionUrl": "/definition/like/",
   "addDefinitionUrl": "/definition/add",
-  "addWordUrl": "/word/add"
+  "addWordUrl": "/word/add",
+  "tagsUrl": "/tags"
 }

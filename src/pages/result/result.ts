@@ -64,8 +64,10 @@ export class ResultPage {
               // TODO: if found update local with changes from server.
               // For now, only one match is returned per word from the dbProvider.
               // Because, of the unique constraint on db.words.word and full match search
-              inDb[0].loadDefinitions();
-              result = inDb[0];
+              if(inDb){
+                inDb[0].loadDefinitions();
+                result = inDb[0];
+              }
             })
             .catch(err => console.log(err)); // do nothing
             result.loadMemo();
@@ -93,7 +95,7 @@ export class ResultPage {
   onInput(ev){
     // if "Enter" key is pressed
     if(ev.key == "Enter" &&
-      this.searchedWord && this.searchedWord.trim().length > 2
+      this.searchedWord && this.searchedWord.trim().length > 1
     ){
       this.getResults(this.searchedWord.trim());
     }

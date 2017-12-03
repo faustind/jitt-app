@@ -17,7 +17,7 @@ export class AppDatabase extends Dexie {
         // Define tables and indexes
 
         db.version(1).stores({
-          words: '++id,word_id,&word,kana,translation,tags,bookmark,edit,local',
+          words: '++id,word_id,&word,kana,translation,tags,bookmark,edit,local,contrib',
           definitions: '++defId,id,word_id,content,language,source,likes,liked,contrib',
           tags: '++id,tag_id,&title',
           memos: 'word_id,content',
@@ -94,12 +94,21 @@ export class JittWord implements IJittWord{
 
     /** @var int id in local db*/
     id: number;
+
+    /** @var string the memo content*/
     memo: string;
+
+    /** @var boolean true if the word is a bookmark*/
     bookmark: boolean; // is in the bookmarks
+
     /** @var boolean true if the word is saved for continued edition */
     edit: boolean;  // still being edited
+
     /** @var boolean true if the word has never been submitted to jitt servers */
     local: boolean; // never been posted to server
+
+    /** @var boolean true if the word has been submitted to server from this user */
+    contrib: boolean
 
     tags: ITag[]; // retrieval and persisting are handled by dexie
     definitions: IDefinition[]; // handled manually
@@ -120,7 +129,10 @@ export class JittWord implements IJittWord{
         //Insert or update the word
         if(!this.id){
           // if no local is set, insert in localdb and get the id
+          // TODO: handle rejections for the next instruction
           this.id = await db.words.add(this);
+
+
 
           // ... also save its definitions if presents
           if(this.definitions && this.definitions.length > 0)
@@ -149,7 +161,9 @@ export class JittWord implements IJittWord{
     }
 
     orderDefinitions(){
-      this.definitions.sort(this.compareDefinitions);
+      if (this.definitions && this.definitions.length > 0){
+          this.definitions.sort(this.compareDefinitions);
+      }
     }
 
     private compareDefinitions(def1, def2){
@@ -167,11 +181,24 @@ export class JittWord implements IJittWord{
       .where('word_id')
       .equals(this.word_id)
       .first( memo => {
-        this.memo = memo.content;
+        if (memo) { this.memo = memo.content };
       });
     }
 
-    removeFromLocalDb(){
+    removeFromLocalDb(){}
+
+    /** @return Json object of the properties needed for submition*/
+    toJson(){
+      let json = <IJittWord>{};
+
+      json.word = this.word;
+      json.kana = this.kana;
+      json.translation = this.translation;
+
+      json.tags = this.tags;
+      json.definitions = this.definitions;
+
+      return json;
 
     }
 

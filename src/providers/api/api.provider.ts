@@ -62,4 +62,28 @@ export class ApiProvider {
     });
   }
 
+  getTags(){
+    return this.http.get(api.host + api.tagsUrl)
+    .toPromise()
+    .then(response => {
+      //console.log(response.json().data);
+      return response.json().data
+    })
+  }
+
+  /** @return a promise that resolve with the saved word on server */
+  submitWord(word: JittWord): Promise<JittWord>{
+    let data = new FormData();
+    data.set('word', JSON.stringify(word.toJson()));
+
+    return this.http
+    .post(api.host + api.addWordUrl, data)
+    .toPromise()
+    .then(res => {return Object.assign(new JittWord(), res.json().data.word)})
+    .catch(err => {
+      console.error('Error while submiting the word ' +  err);
+      return Promise.reject(err);
+    });
+  }
+
 }

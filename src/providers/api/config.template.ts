@@ -11,5 +11,6 @@ export const api = {
   "matchWordUrl": "/words/match/",
   "likeDefinitionUrl": "/definition/like/",
   "addDefinitionUrl": "/definition/add",
-  "addWordUrl": "/word/add"
+  "addWordUrl": "/word/add",
+  "tagsUrl": "/tags"
 }

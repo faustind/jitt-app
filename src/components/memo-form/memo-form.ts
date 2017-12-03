@@ -53,8 +53,6 @@ export class MemoFormComponent {
 
   onSaveMemo(){
     this.memo.content = this.memo.content.trim();
-    let memoId = 0;
-
     if (this.memo.content && this.memo.content.length > 0){
       this.db.saveMemo(this.memo)
       .then(savedMemoId => { this.viewCtrl.dismiss(this.memo)})

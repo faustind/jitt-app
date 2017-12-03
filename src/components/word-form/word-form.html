@@ -3,23 +3,23 @@
 
     <ion-item>
      <ion-label stacked>Word</ion-label>
-     <ion-input type="text" formControlName="word"></ion-input>
+     <ion-input type="text" formControlName="word" required></ion-input>
    </ion-item>
 
    <ion-item>
     <ion-label stacked>Kana</ion-label>
-    <ion-input type="text" formControlName="kana"></ion-input>
+    <ion-input type="text" formControlName="kana" required></ion-input>
     </ion-item>
 
     <ion-item>
        <ion-label stacked>Translation</ion-label>
-       <ion-input type="text" formControlName="translation"></ion-input>
+       <ion-input type="text" formControlName="translation" required></ion-input>
     </ion-item>
     <!-- Tags Selection -->
     <ion-item>
       <ion-label><small>Tags</small></ion-label>
       <ion-select multiple="true" [compareWith]="tagsControl" formControlName="tags">
-       <ion-option *ngFor="let tag of TAGS, let i=index" [value]="tag">{{tag.title}}</ion-option>
+       <ion-option *ngFor="let tag of TAGS, let i=index" [value]="tag" >{{tag.title.toUpperCase()}}</ion-option>
       </ion-select>
     </ion-item>
     <!-- End Tags Selection -->
