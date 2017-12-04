@@ -140,7 +140,13 @@ export class ResultPage {
       definitionModal.onDidDismiss(definition => {
         if (definition && definition.defId){
           console.log('definition as been saved on jitt');
-          this.selectedResult.definitions.push(definition);
+          if(this.selectedResult.definitions){
+              this.selectedResult.definitions.push(definition);
+          } else {
+            this.selectedResult.definitions = [];
+            this.selectedResult.definitions[0]=definition;
+          }
+
           this.presentToast("Thank you for your contribution !");
         } else { console.log('Definition has not been saved.') }
       });

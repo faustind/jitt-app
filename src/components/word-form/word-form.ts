@@ -158,8 +158,8 @@ export class WordFormComponent implements OnChanges{
       // Mark it as a contribution
       wordSubmited.contrib = true;
       // Save it to locals
-      wordSubmited.save();
 
+      this.confirmSaveLocal(wordSubmited);
       // notify user
     })
     .catch(err => {
@@ -228,6 +228,28 @@ export class WordFormComponent implements OnChanges{
       alert.present();
     }
 
+  confirmSaveLocal(wordSubmited: JittWord) {
+  let alert = this.alertCtrl.create({
+    title: 'Keep your contribution',
+    message: 'Do you want to save this word locally ?',
+    buttons: [
+      {
+        text: 'Nope',
+        role: 'cancel',
+        handler: () => {
+          console.log('Cancel clicked');
+        }
+      },
+      {
+        text: 'Yeah',
+        handler: () => {
+            wordSubmited.save();;
+        }
+      }
+    ]
+  });
+  alert.present();
+}
 
   /** compareFn for tags control */
   tagsControl(t1: ITag, t2: ITag): boolean {
