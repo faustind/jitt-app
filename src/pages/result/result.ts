@@ -65,8 +65,11 @@ export class ResultPage {
               // For now, only one match is returned per word from the dbProvider.
               // Because, of the unique constraint on db.words.word and full match search
               if(inDb){
-                inDb[0].loadDefinitions();
-                result = inDb[0];
+                // inDb[0].loadDefinitions();
+                // result = inDb[0];
+                 result.id = inDb[0].id;
+                 result.bookmark = inDb[0].bookmark;
+                 result.save();
               }
             })
             .catch(err => console.log(err)); // do nothing

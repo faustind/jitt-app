@@ -147,6 +147,7 @@ export class JittWord implements IJittWord{
           // no need to insert definitions here
           // Because definitions manage themselves when it comes to updates
           db.words.update(this.id, this);
+          this.updateDefinitions();
         }
       })
 
@@ -185,7 +186,23 @@ export class JittWord implements IJittWord{
       });
     }
 
-    removeFromLocalDb(){}
+    updateDefinitions(){
+      this.definitions.forEach((def)=>{
+        db.transaction('rw', db.definitions, async() => {
+          db.definitions.where('id')
+            .equals(def.id)
+            .modify(def)
+            .catch(Dexie.ModifyError, (e) => {
+              // that definitions doesn't exist in localdb
+              console.log("failed to modify definition " + e)
+              console.log("Trying to save definitions...");
+              // Try to persist it
+              db.definitions.put(def).then(() => console.log("Succeded"));
+            })
+        })
+      })
+
+    }
 
     /** @return Json object of the properties needed for submition*/
     toJson(){
