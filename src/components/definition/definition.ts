@@ -3,15 +3,10 @@ import {IDefinition } from '../../providers/db/db';
 import { ApiProvider } from '../../providers/api/api.provider';
 import { dbProvider } from '../../providers/db/db.provider';
 
-/**
- * Generated class for the DefinitionComponent component.
- *
- * See https://angular.io/api/core/Component for more info on Angular
- * Components.
- */
+
 @Component({
   selector: 'definition',
-  templateUrl: 'definition.html'
+  templateUrl: 'definition.html',
 })
 export class DefinitionComponent implements OnInit{
 

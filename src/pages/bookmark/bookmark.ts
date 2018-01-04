@@ -44,7 +44,17 @@ export class BookmarkPage {
    * get results from db Provider provider
   */
   getResults(word: string): any{
-
+    this.db.findInLocals(word)
+    .then(
+      (results) => {
+        results.forEach((result, index, results) => {
+          result.loadMemo();
+          result.loadDefinitions();
+          result.orderDefinitions;
+        })
+        this.results = results;
+      })
+    .catch(err => console.log(err))
   }
 
   /**

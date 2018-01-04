@@ -143,9 +143,7 @@ export class JittWord implements IJittWord{
               console.log("Error while saving definitions: " + err)
             }
 
-        } else { // just update it
-          // no need to insert definitions here
-          // Because definitions manage themselves when it comes to updates
+        } else { // update the word and its definitions
           db.words.update(this.id, this);
           this.updateDefinitions();
         }

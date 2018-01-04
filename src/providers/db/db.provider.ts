@@ -28,8 +28,21 @@ export class dbProvider {
   /**
   * return matches uniquely from locals and bookmarks
   */
-  findInLocals(word : string){
-
+  findInLocals(word : string): Promise<JittWord[]>{
+    return db.words
+    .filter((wd) => {
+      return (
+        (wd.word && wd.word.includes(word)) ||
+        (wd.kana && wd.kana.includes(word)) ||
+        (wd.translation && wd.translation.includes(word))
+      )
+    })
+    .toArray()
+    .then(function(results) {
+      return results.length == 0
+      ? Promise.reject("No match found in local db")
+      : Promise.resolve(results)
+    });
   }
 
   saveMemo(memo: IMemo): Promise<number>{

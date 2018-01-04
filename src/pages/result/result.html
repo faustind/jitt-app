@@ -8,6 +8,10 @@
 
       <ion-buttons end>
         <button ion-button icon-only large color="white"
+          (click)="showDefinitionForm()">
+          <ion-icon name="md-add"></ion-icon>
+        </button>
+        <button ion-button icon-only large color="white"
           (click)="toogleBookmark()">
           <ion-icon name="md-bookmark"></ion-icon>
         </button>
@@ -16,8 +20,8 @@
           <ion-icon name="md-clipboard"></ion-icon>
         </button>
         <button ion-button icon-only large color="white"
-          (click)="showDefinitionForm()">
-          <ion-icon name="md-add"></ion-icon>
+          (click)="showOptions()">
+          <ion-icon name="md-options"></ion-icon>
         </button>
       </ion-buttons>
     </ion-navbar>

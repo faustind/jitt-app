@@ -1,12 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import {IDefinition } from '../../providers/db/db';
 
-/**
- * Generated class for the DefinitionLanguageGroupComponent component.
- *
- * See https://angular.io/api/core/Component for more info on Angular
- * Components.
- */
+
 @Component({
   selector: 'definition-language-group',
   templateUrl: 'definition-language-group.html'

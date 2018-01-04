@@ -9,6 +9,7 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { ComponentsModule } from '../components/components.module';
 // app providers
 import { dbProvider } from '../providers/db/db.provider';
+import { ApiProvider } from '../providers/api/api.provider';
 
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
@@ -68,6 +69,7 @@ import { DefinitionFormComponent } from '../components/definition-form/definitio
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     dbProvider,
+    ApiProvider,
   ]
 })
 export class AppModule {}
