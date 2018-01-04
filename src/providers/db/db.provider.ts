@@ -39,6 +39,13 @@ export class dbProvider {
     })
   }
 
+  deleteMemo(memo: IMemo){
+    return db.transaction('rw', db.memos, async()=> {
+      // memo with same word_id is replaced by the new insertion
+      return db.memos.delete(memo.word_id);
+    })
+  }
+
   getMemo(wordId: number){
     return db.memos
     .where('word_id')

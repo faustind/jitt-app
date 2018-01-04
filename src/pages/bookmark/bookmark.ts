@@ -1,58 +1,39 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, MenuController } from 'ionic-angular';
+import { NavController, NavParams, MenuController, ModalController, ToastController } from 'ionic-angular';
 
-import { Observable } from 'rxjs/Observable'
-import  'rxjs/add/operator/switchMap';
+import { JittWord } from '../../providers/db/db';
+
+import { MemoFormComponent } from '../../components/memo-form/memo-form';
+import { DefinitionFormComponent } from '../../components/definition-form/definition-form';
 import  'rxjs/add/observable/of';
 import  'rxjs/add/operator/take';
 
-import { TAGS } from '../../entities/mock-data';
 
 import { ApiProvider } from '../../providers/api/api.provider';
+import { dbProvider } from '../../providers/db/db.provider'
 
-/**
- * Generated class for the BookmarkComponent component.
- *
- * See https://angular.io/api/core/Component for more info on Angular
- * Components.
- */
+
 @Component({
   selector: 'bookmark',
-  templateUrl: 'bookmark.html'
+  templateUrl: 'bookmark.html',
 })
 export class BookmarkPage {
-  private result$: Observable<any>;
-  private selectedResult: any;
+
+  private results: JittWord[];
+  private selectedResult: JittWord;
   private searchedWord: string;
 
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
     public menuCtrl: MenuController,
+    public modalCtrl: ModalController,
+    public toastCtrl: ToastController,
+    private db: dbProvider
   ) { }
 
   ionViewWillEnter(){
-    this.result$ = Observable.of([
-      {
-        word: '再帰的',
-        kana: 'さいきてき',
-        definition: '再帰的はあるものを定義するにあたってそれ自身を定義に含むものを言う',
-        eng_translation: 'Recursive',
-        eng_definition: 'Recursive is said of something that is used in its own definition',
-        tags: [TAGS[1], TAGS[6]],
-        comment: '数学では <recursion> または　<induction> の訳として < 帰納 (きのう)> を使うことがある',
-        isBookmarked: true,
-      },
-      {
-        word: '外部割込み',
-        kana: 'がいぶわりこみ',
-        definition: '周辺装置の読み書きによって起こる割り込みのこと',
-        eng_translation: 'External Interrupt',
-        eng_definition: 'An external interrupt is a computer system interrupt that happens as a result of outside interference, whether that’s from the user, from peripherals, from other hardware devices or through a network',
-        tags: [TAGS[5],TAGS[1]],
-        isBookmarked: false,
-      }
-    ])
+
   }
 
   ionViewDidEnter(){
@@ -60,7 +41,7 @@ export class BookmarkPage {
   }
 
   /**
-   * get results from result provider
+   * get results from db Provider provider
   */
   getResults(word: string): any{
 
@@ -69,7 +50,7 @@ export class BookmarkPage {
   /**
    * sets the highlighted element on the result list
   */
-  onSelect(result: any){
+  onSelectWord(result: JittWord){
     this.selectedResult = result;
   }
 
@@ -78,9 +59,85 @@ export class BookmarkPage {
   */
   onInput(ev){
     // if "Enter" key is pressed
-    if(ev.key == "Enter" && this.searchedWord.trim() !== ''){
-      this.getResults(this.searchedWord);
+    if(ev.key == "Enter" &&
+      this.searchedWord && this.searchedWord.trim().length > 1
+    ){
+      this.getResults(this.searchedWord.trim());
     }
+  }
+
+  /**
+   * Bookmarks the selectedResult and save it to the local db
+  */
+  toogleBookmark(){
+    if(this.selectedResult){
+      if (!this.selectedResult.bookmark){
+        this.selectedResult.bookmark = true;
+        this.selectedResult.save();
+      } else {
+        this.selectedResult.bookmark = false;
+        this.selectedResult.save();
+      }
+    }
+  }
+
+  showMemoForm(){
+    if(this.selectedResult){
+      let memoModal = this.modalCtrl.create(MemoFormComponent, { word: this.selectedResult });
+
+      memoModal.onDidDismiss(memo => {
+        if (memo && memo.content.length > 0){
+          console.log('memo saved ' + JSON.stringify(memo));
+          this.selectedResult.memo = memo.content;
+          this.presentToast("Your memo has been successfuly saved !");
+        } else if( typeof memo == "undefined") {
+          this.selectedResult.memo = "";
+          console.log('Memo has not been saved.');
+        }
+      });
+      memoModal.present();
+
+    } else {
+      console.log('No word selected');
+    }
+  }
+
+  showDefinitionForm(){
+    if(this.selectedResult){
+      let definitionModal = this.modalCtrl.create(DefinitionFormComponent, { word: this.selectedResult });
+
+      definitionModal.onDidDismiss(definition => {
+        if (definition && definition.defId){
+          console.log('definition as been saved on jitt');
+          if(this.selectedResult.definitions){
+              this.selectedResult.definitions.push(definition);
+          } else {
+            this.selectedResult.definitions = [];
+            this.selectedResult.definitions[0]=definition;
+          }
+
+          this.presentToast("Thank you for your contribution !");
+        } else { console.log('Definition has not been saved.') }
+      });
+      definitionModal.present();
+
+    } else {
+      console.log('No word selected');
+    }
+  }
+
+  compareFn(wd: JittWord): boolean{
+    return wd && this.selectedResult ? wd.word === this.selectedResult.word : wd === this.selectedResult;
+  }
+
+
+  presentToast(message: any){
+    let toast = this.toastCtrl.create({
+      message: message,
+      duration: 2000,
+      position: 'bottom'
+    });
+    toast.present();
   }
 
 }

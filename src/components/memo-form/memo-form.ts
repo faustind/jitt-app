@@ -51,6 +51,13 @@ export class MemoFormComponent {
     this.viewCtrl.dismiss();
   }
 
+  onDeleteMemo(){
+    if (this.memo.content.length > 0){
+      this.db.deleteMemo(this.memo)
+        .then(() => {this.viewCtrl.dismiss()})
+    }
+  }
+
   onSaveMemo(){
     this.memo.content = this.memo.content.trim();
     if (this.memo.content && this.memo.content.length > 0){

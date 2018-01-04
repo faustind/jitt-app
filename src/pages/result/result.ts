@@ -55,20 +55,17 @@ export class ResultPage {
     // console.log(this.resultsProvider.getResults(word));
       this.apiProvider.getResults(word)
       .then(
-        // if a word in results is in db, use it as a
-        // replacement for the result from server
         (results) => {
           results.forEach((result, index, results) => {
+            // look for results that have been saved locally for update
             this.db.find(result.word)
             .then(inDb => {
-              // TODO: if found update local with changes from server.
+              // TODO: if result in local, update local with changes from server.
               // For now, only one match is returned per word from the dbProvider.
               // Because, of the unique constraint on db.words.word and full match search
               if(inDb){
-                // inDb[0].loadDefinitions();
-                // result = inDb[0];
-                 result.id = inDb[0].id;
-                 result.bookmark = inDb[0].bookmark;
+                 result.id = inDb[0].id;              // set the result local id
+                 result.bookmark = inDb[0].bookmark;  // and set its bookmark value
                  result.save();
               }
             })
@@ -80,7 +77,7 @@ export class ResultPage {
       })
       .catch(err => {
         // TODO: look for partial matches in local db for the searchedWord
-        // TODO: Inform user that no match was found for his word
+        // TODO: Inform user that no match was found for the search
         console.log("Error :" + err);
       });
   }
@@ -128,7 +125,10 @@ export class ResultPage {
           console.log('memo saved ' + JSON.stringify(memo));
           this.selectedResult.memo = memo.content;
           this.presentToast("Your memo has been successfuly saved !");
-        } else { console.log('Memo has not been saved.') }
+        } else if( typeof memo == "undefined") {
+          this.selectedResult.memo = "";
+          console.log('Memo has not been saved.');
+        }
       });
       memoModal.present();
 
@@ -136,6 +136,8 @@ export class ResultPage {
       console.log('No word selected');
     }
   }
+
+  
   showDefinitionForm(){
     if(this.selectedResult){
       let definitionModal = this.modalCtrl.create(DefinitionFormComponent, { word: this.selectedResult });
