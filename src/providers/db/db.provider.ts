@@ -26,7 +26,9 @@ export class dbProvider {
   }
 
   /**
-  * return matches uniquely from locals and bookmarks
+  * Returns a Promise that resolve with an array of JittWord.
+  * @param string word: the string to search for
+  * @return Promise<JittWord>
   */
   findInLocals(word : string): Promise<JittWord[]>{
     return db.words

@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, MenuController, ModalController, ToastController } from 'ionic-angular';
+import { NavController, NavParams, MenuController, ModalController, ToastController, PopoverController } from 'ionic-angular';
 
 import { JittWord } from '../../providers/db/db';
 
 import { MemoFormComponent } from '../../components/memo-form/memo-form';
+import { OptionsFormComponent } from '../../components/options-form/options-form';
 import { DefinitionFormComponent } from '../../components/definition-form/definition-form';
 import  'rxjs/add/observable/of';
 import  'rxjs/add/operator/take';
@@ -28,6 +29,7 @@ export class ResultPage {
     public navParams: NavParams,
     public menuCtrl: MenuController,
     public modalCtrl: ModalController,
+    public popoverCtrl: PopoverController,
     public toastCtrl: ToastController,
     private apiProvider: ApiProvider,
     private db: dbProvider
@@ -137,7 +139,7 @@ export class ResultPage {
     }
   }
 
-  
+
   showDefinitionForm(){
     if(this.selectedResult){
       let definitionModal = this.modalCtrl.create(DefinitionFormComponent, { word: this.selectedResult });
@@ -160,6 +162,11 @@ export class ResultPage {
     } else {
       console.log('No word selected');
     }
+  }
+
+  showOptions(){
+    let optionsPopover = this.popoverCtrl.create(OptionsFormComponent);
+  optionsPopover.present();
   }
 
   compareFn(wd: JittWord): boolean{

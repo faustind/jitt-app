@@ -1,0 +1,13 @@
+<ion-list radio-group [(ngModel)]="language"  (ionChange)="onLanguageSelected($event)">
+  <ion-list-header text-center>
+    Choose Interface Language
+  </ion-list-header>
+  <ion-item>
+    <ion-label>English</ion-label>
+    <ion-radio value="en"></ion-radio>
+  </ion-item>
+  <ion-item>
+    <ion-label>日本語</ion-label>
+    <ion-radio value="ja"></ion-radio>
+  </ion-item>
+</ion-list>

@@ -8,6 +8,7 @@ import { DefinitionLanguageGroupComponent } from './definition-language-group/de
 import { WordDetailsComponent } from './word-details/word-details';
 import { WordFormComponent } from './word-form/word-form';
 import { MemoFormComponent } from './memo-form/memo-form';
+import { OptionsFormComponent } from './options-form/options-form';
 import { DefinitionFormComponent } from './definition-form/definition-form';
 
 
@@ -19,6 +20,7 @@ import { DefinitionFormComponent } from './definition-form/definition-form';
     WordDetailsComponent,
     WordFormComponent,
     MemoFormComponent,
+    OptionsFormComponent,
     DefinitionFormComponent],
 	imports: [ IonicModule, ReactiveFormsModule ],
 	exports: [
@@ -28,6 +30,7 @@ import { DefinitionFormComponent } from './definition-form/definition-form';
     WordDetailsComponent,
     WordFormComponent,
     MemoFormComponent,
+    OptionsFormComponent,
     DefinitionFormComponent
   ]
 })
