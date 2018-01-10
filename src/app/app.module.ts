@@ -3,7 +3,7 @@ import { ErrorHandler, NgModule } from '@angular/core';
 import { HttpModule, Http } from '@angular/http';
 
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
-import { TranslateModule, TranslateLoader, TranslateStaticLoader, TranslateService} from 'ng2-translate';
+import { TranslateModule, TranslateLoader, TranslateStaticLoader} from 'ng2-translate';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
 
