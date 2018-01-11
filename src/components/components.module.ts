@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { IonicModule } from 'ionic-angular';
 import { ReactiveFormsModule } from '@angular/forms';
+import { TranslateModule } from 'ng2-translate';
 
 import { WordItemComponent } from './word-item/word-item';
 import { DefinitionComponent } from './definition/definition';
@@ -22,7 +23,7 @@ import { DefinitionFormComponent } from './definition-form/definition-form';
     MemoFormComponent,
     OptionsFormComponent,
     DefinitionFormComponent],
-	imports: [ IonicModule, ReactiveFormsModule ],
+	imports: [ IonicModule, ReactiveFormsModule, TranslateModule],
 	exports: [
     WordItemComponent,
     DefinitionComponent,

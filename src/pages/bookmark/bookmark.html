@@ -4,7 +4,7 @@
       <button ion-button menuToggle left>
        <ion-icon name="menu"></ion-icon>
      </button>
-      <ion-title>Local</ion-title>
+      <ion-title>{{'LOCAL.TITLE' | translate}}</ion-title>
       <ion-buttons end>
         <button ion-button icon-only large color="white"
           (click)="showDefinitionForm()">
@@ -31,6 +31,7 @@
 
     <ion-toolbar color="light">
       <ion-searchbar
+        placeholder="{{'SEARCH.SRCH-PLACEHOLDER' | translate}}"
         animated
         [(ngModel)]="searchedWord"
         (keyup)="onInput($event)"
