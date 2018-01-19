@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { JittWord } from '../../providers/db/db'
 /**
  * Generated class for the WordDetailsComponent component.
@@ -13,6 +13,9 @@ import { JittWord } from '../../providers/db/db'
 export class WordDetailsComponent {
 
   @Input() word: JittWord;
+  @Output() onBookmark = new EventEmitter<boolean>();
+  @Output() onMemo = new EventEmitter<boolean>();
+  @Output() onAdd = new EventEmitter<boolean>();
 
   constructor() {
     console.log('Hello WordDetailsComponent Component');
@@ -33,4 +36,15 @@ export class WordDetailsComponent {
     }
   }
 
+  showDefinitionForm(){
+    this.onAdd.emit();
+  }
+
+  toogleBookmark(){
+    this.onBookmark.emit();
+  }
+
+  showMemoForm(){
+    this.onMemo.emit();
+  }
 }

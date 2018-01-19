@@ -32,12 +32,21 @@ export class BookmarkPage {
     private db: dbProvider
   ) { }
 
-  ionViewWillEnter(){
-
-  }
+  ionViewWillEnter(){ }
 
   ionViewDidEnter(){
     this.menuCtrl.enable(true, 'result-list');
+    this.db.getBookmarked()
+    .then(
+      (results) => {
+        results.forEach((result, index, results) => {
+          result.loadMemo();
+          result.loadDefinitions();
+          result.orderDefinitions;
+        })
+        this.results = results;
+      })
+    .catch(err => console.log(err))
   }
 
   /**

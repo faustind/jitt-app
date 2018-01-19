@@ -33,8 +33,12 @@ export class WordFormComponent implements OnChanges{
   }
 
   ngOnChanges(){
-    if(this.wordForm.dirty) this.confirmChange();
-    else this.resetWordForm();
+    if(this.wordForm.dirty) { this.confirmChange() }
+    else { this.resetWordForm() };
+
+    if(this.definitions.length === 0){
+      this.addDefinition();
+    }
   }
 
   createForm(){
@@ -44,7 +48,7 @@ export class WordFormComponent implements OnChanges{
       translation: '',
       definitions: this.fb.array([]),
       tags: [],
-    })
+    });
   }
 
   resetWordForm(){
@@ -73,6 +77,7 @@ export class WordFormComponent implements OnChanges{
   * FormArray
   */
   addDefinition() {
+    console.log("called");
     this.definitions.push(this.fb.group({
       content: '',
       source: '',

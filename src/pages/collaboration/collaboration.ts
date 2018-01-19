@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
-import { NavController, MenuController, AlertController, ToastController } from 'ionic-angular';
+import { NavController, MenuController, AlertController, ToastController, PopoverController } from 'ionic-angular';
+
+import { OptionsFormComponent } from '../../components/options-form/options-form';
 
 import { dbProvider } from '../../providers/db/db.provider';
 import { ApiProvider } from '../../providers/api/api.provider'
@@ -28,7 +30,7 @@ export class CollaborationPage {
   /**
   * ngModel binding for the add word bar
   */
-  inputWord: string;
+  inputWord: string = "";
 
   /**
   * the word that is being edited
@@ -43,7 +45,8 @@ export class CollaborationPage {
     public MenuCtrl: MenuController,
     public alertCtrl: AlertController,
     private localDb: dbProvider,
-    public toastCtrl: ToastController
+    public toastCtrl: ToastController,
+    public popoverCtrl: PopoverController,
   ) { }
 
   ionViewDidEnter(){
@@ -109,10 +112,6 @@ export class CollaborationPage {
 
   }
 
-  showUserDetails(){
-    console.log("collaboration.showUserDetails: showing user details")
-  }
-
   /**
   * updates editingWord
   */
@@ -122,16 +121,6 @@ export class CollaborationPage {
     // change the word in wordForm to selectedWord
     this.editingWord = selectedWord;
   }
-
-  /**
-   * shows or hide words in continue later
-  */
-  toggleContinueLater(){
-  // fetch all continueLaters from localDb
-  // and add them to the head of editList
-    console.log("collaboration.toggleContinueLater : toggle");
-
-   }
 
   /**
    * confirm removal of a word from edit list
@@ -165,4 +154,8 @@ export class CollaborationPage {
     this.editList[this.editedWordIndex] = editedWord;
   }
 
+  showOptions(){
+    let optionsPopover = this.popoverCtrl.create(OptionsFormComponent);
+  optionsPopover.present();
+  }
 }

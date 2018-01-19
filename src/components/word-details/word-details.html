@@ -10,7 +10,22 @@
 
   </ion-item>
   <!-- end detail view header -->
-
+  <ion-item>
+    <ion-buttons>
+      <button ion-button outline icon-left small color="accent-color"
+        (click)="showDefinitionForm()">
+        <ion-icon name="md-add"></ion-icon>definition
+      </button>
+      <button ion-button outline icon-left small color="accent-color"
+        (click)="toogleBookmark()">
+        <ion-icon name="md-bookmark"></ion-icon>bookmark
+      </button>
+      <button ion-button outline icon-left small color="accent-color"
+       (click)="showMemoForm()">
+        <ion-icon name="md-attach"></ion-icon>memo
+      </button>
+    </ion-buttons>
+  </ion-item>
   <!-- definitions lists -->
   <ion-item>
     <definition-language-group [language]="language('EN')" [definitions]="selectedWordDefs('EN')"></definition-language-group>
@@ -30,12 +45,10 @@
     </ion-buttons>
   </ion-item>
   <!-- end tag row -->
-
-
-     <ion-item end *ngIf="word.memo">
-      <div>
-        {{word.memo}}
-      </div>
-     </ion-item>
+ <ion-item end *ngIf="word.memo">
+  <div>
+    {{word.memo}}
+  </div>
+ </ion-item>
 
 </ion-list>
