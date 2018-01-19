@@ -28,7 +28,7 @@ export class CollaborationPage {
   /**
   * ngModel binding for the add word bar
   */
-  inputWord: string;
+  inputWord: string = "";
 
   /**
   * the word that is being edited
