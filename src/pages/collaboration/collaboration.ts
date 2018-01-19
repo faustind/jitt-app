@@ -109,10 +109,6 @@ export class CollaborationPage {
 
   }
 
-  showUserDetails(){
-    console.log("collaboration.showUserDetails: showing user details")
-  }
-
   /**
   * updates editingWord
   */
@@ -122,16 +118,6 @@ export class CollaborationPage {
     // change the word in wordForm to selectedWord
     this.editingWord = selectedWord;
   }
-
-  /**
-   * shows or hide words in continue later
-  */
-  toggleContinueLater(){
-  // fetch all continueLaters from localDb
-  // and add them to the head of editList
-    console.log("collaboration.toggleContinueLater : toggle");
-
-   }
 
   /**
    * confirm removal of a word from edit list

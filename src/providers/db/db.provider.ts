@@ -76,4 +76,17 @@ export class dbProvider {
     })
   }
 
+  getBookmarked(){
+    return db.words
+    .filter((wd) => {
+      return wd.bookmark == true
+    })
+    .toArray()
+    .then(function(results) {
+      return results.length == 0
+      ? Promise.reject("No bookmark found in local db")
+      : Promise.resolve(results)
+    });
+  }
+
 }
