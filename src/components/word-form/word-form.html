@@ -1,0 +1,91 @@
+<form class="edit-form" [formGroup]="wordForm">
+  <ion-list>
+
+    <ion-item>
+     <ion-label stacked>{{'CONTRIB.WORD-LABEL' | translate}}</ion-label>
+     <ion-input type="text" formControlName="word" required></ion-input>
+   </ion-item>
+
+   <ion-item>
+    <ion-label stacked>{{'CONTRIB.KANA-LABEL' | translate}}</ion-label>
+    <ion-input type="text" formControlName="kana" required></ion-input>
+    </ion-item>
+
+    <ion-item>
+       <ion-label stacked>{{'CONTRIB.TRANSLATION-LABEL' | translate}}</ion-label>
+       <ion-input type="text" formControlName="translation" required></ion-input>
+    </ion-item>
+    <!-- Tags Selection -->
+    <ion-item>
+      <ion-label><small>{{'CONTRIB.TAGS-LABEL' | translate}}</small></ion-label>
+      <ion-select multiple="true" [compareWith]="tagsControl" formControlName="tags">
+       <ion-option *ngFor="let tag of TAGS, let i=index" [value]="tag" >{{tag.title.toUpperCase()}}</ion-option>
+      </ion-select>
+    </ion-item>
+    <!-- End Tags Selection -->
+
+    <!-- Definitions form array-->
+    <ion-item-group formArrayName="definitions">
+
+      <!-- repeated definitions templates -->
+      <div *ngFor="let definition of definitions.controls; let i=index" [formGroupName]="i">
+
+      <ion-item-divider color="light">{{'CONTRIB.DEF-LABEL.DEFINITION' | translate}} #{{i + 1}} <ion-icon name="close" (click)="removeDefinition(i)"></ion-icon></ion-item-divider>
+        <ion-item>
+           <ion-label stacked>{{'CONTRIB.DEF-LABEL.DEF-CONTENT' | translate}}</ion-label>
+           <ion-input type="text" formControlName="content"></ion-input>
+        </ion-item>
+
+        <ion-item>
+           <ion-label stacked>{{'CONTRIB.DEF-LABEL.DEF-SOURCE' | translate}}</ion-label>
+           <ion-input type="text" formControlName="source"></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label><small>{{'CONTRIB.DEF-LABEL.DEF-LANGUAGE' | translate}}</small></ion-label>
+          <ion-select multiple="false" formControlName="language">
+           <ion-option value="english">English</ion-option>
+           <ion-option value="japanese">日本語</ion-option>
+          </ion-select>
+        </ion-item>
+      </div>
+
+      <ion-item text-center>
+        <button (click)="addDefinition()" ion-button type="button" color="accent-color" outline>
+        {{'CONTRIB.DEF-LABEL.ADD-BTN' | translate}}
+        </button>
+      </ion-item>
+      <!-- end repeated definitions templates -->
+    </ion-item-group>
+     <!-- End Definitoion Form array -->
+
+    <!-- form buttons -->
+     <ion-item text-end block>
+       <button ion-button icon-left medium
+        color="secondary-text-color" outline
+        (click)="revert()">
+         <ion-icon name="md-refresh"></ion-icon>{{'CONTRIB.REVERT-BTN' | translate}}
+       </button>
+
+       <!-- Save local button -->
+       <button ion-button icon-left medium
+        color="secondary-text-color" outline
+        (click)="onSaveLocal()">
+         <ion-icon name="arrow-down"></ion-icon>{{'CONTRIB.SAVE-LOCAL-BTN' | translate}}
+       </button>
+
+       <!-- Add to jitt button -->
+       <button ion-button icon-left medium color="primary-color-dark" outline
+       (click)="onSubmit()">
+         <ion-icon name="heart"></ion-icon>{{'CONTRIB.SAVE-JITT-BTN' | translate}}
+       </button>
+     </ion-item>
+    <!-- end form buttons -->
+     <!-- wordForm logs -->
+     <!-- <ion-item>
+       <p>Form value: {{ wordForm.value | json }}</p>
+       <p>Form status: {{ wordForm.get('tags').value | json}}</p>
+     </ion-item>　-->
+     <!-- end wordForm logs -->
+  </ion-list>
+</form>

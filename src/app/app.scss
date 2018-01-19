@@ -1,2 +1,13 @@
 // App Global Sass
 // --------------------------------------------------
+
+// fix: remove white space between header and detail-view
+//       and unhide content under tabs
+.scroll-content{
+  margin-top: 0px !important;
+  margin-bottom: 90px !important;
+}
+
+.collaboration-toast{
+  text-align: center
+}

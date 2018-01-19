@@ -1,64 +1,78 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { ErrorHandler, NgModule } from '@angular/core';
-import { HttpModule } from '@angular/http';
+import { HttpModule, Http } from '@angular/http';
 
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
+import { TranslateModule, TranslateLoader, TranslateStaticLoader} from 'ng2-translate';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
 
-import { LocalProvider } from '../providers/local/local.provider';
+// shared component module
+import { ComponentsModule } from '../components/components.module';
+// app providers
+import { dbProvider } from '../providers/db/db.provider';
+import { ApiProvider } from '../providers/api/api.provider';
 
 import { MyApp } from './app.component';
-import { HomePage } from '../pages/home/home';
+// import { HomePage } from '../pages/home/home';
 import { ResultPage } from '../pages/result/result';
 import { TabsPage } from '../pages/tabs/tabs';
 import { CollaborationPage } from '../pages/collaboration/collaboration';
 import { BookmarkPage } from '../pages/bookmark/bookmark';
-import { SettingsPage } from '../pages/settings/settings';
-import { SearchSettingsPage } from '../pages/settings/search/search';
+// import { SettingsPage } from '../pages/settings/settings';
+// import { SearchSettingsPage } from '../pages/settings/search/search';
+//
+// import { LocalSettingsPage } from '../pages/settings/local/local';
+// import { ContribSettingsPage } from '../pages/settings/contrib/contrib';
+// import { AboutPage } from '../pages/about/about';
 
-import { LocalSettingsPage } from '../pages/settings/local/local';
-import { ContribSettingsPage } from '../pages/settings/contrib/contrib';
-import { AboutPage } from '../pages/about/about';
+import { MemoFormComponent } from '../components/memo-form/memo-form';
+import { OptionsFormComponent } from '../components/options-form/options-form'
+import { DefinitionFormComponent } from '../components/definition-form/definition-form';
+
 
 @NgModule({
   declarations: [
     MyApp,
-    HomePage,
     ResultPage,
     TabsPage,
     CollaborationPage,
     BookmarkPage,
-    SettingsPage,
-    ContribSettingsPage,
-    LocalSettingsPage,
-    SearchSettingsPage,
-    AboutPage
+
   ],
   imports: [
     BrowserModule,
     HttpModule,
-    IonicModule.forRoot(MyApp)
+    IonicModule.forRoot(MyApp),
+    TranslateModule.forRoot({
+            provide: TranslateLoader,
+            useFactory: (createTranslateLoader),
+            deps: [Http]
+        }),
+    ComponentsModule,
   ],
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
-    HomePage,
     ResultPage,
     TabsPage,
     CollaborationPage,
     BookmarkPage,
-    SettingsPage,
-    ContribSettingsPage,
-    LocalSettingsPage,
-    SearchSettingsPage,
-    AboutPage
+    OptionsFormComponent,
+    MemoFormComponent,
+    DefinitionFormComponent
   ],
   providers: [
     StatusBar,
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
-    LocalProvider,
+    dbProvider,
+    ApiProvider
   ]
 })
 export class AppModule {}
+
+
+export function createTranslateLoader(http: Http) {
+  return new TranslateStaticLoader(http, 'assets/i18n', '.json');
+}

@@ -10,7 +10,21 @@ img {
   display: block;
   margin: auto;
   width: 470px;
+} 
+
+.search-bar{
+  width: 55%;
+  min-width: 480px;
+  margin: auto;
+//  border-bottom: 2px solid color( $colors, primary-light);
 }
+
+.search-button{
+  width: 200px;
+  margin: auto;
+  margin-top: 15px;
+}
+
 
 .search-bar{
   width: 55%;
