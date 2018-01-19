@@ -22,4 +22,15 @@ export class WordDetailsComponent {
     return lang.toLowerCase();
   }
 
+  selectedWordDefs(lang: string){
+
+    if (this.word.definitions && this.word.definitions.length > 0){
+      if(lang == 'EN'){
+        return this.word.definitions.filter(def => def.language == 'english')
+      } else {
+        return this.word.definitions.filter(def => def.language == 'japanese')
+      }
+    }
+  }
+
 }

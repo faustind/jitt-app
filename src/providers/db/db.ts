@@ -2,10 +2,10 @@ import Dexie from 'dexie';
 
 export class AppDatabase extends Dexie {
 
-  jittWords: Dexie.Table<JittWord, number>;
-  jp_definitions: Dexie.Table<IDefinition, number>;
-  eng_definitions: Dexie.Table<IDefinition, number>;
+  words: Dexie.Table<JittWord, number>;
+  definitions: Dexie.Table<IDefinition, number>;
   tags: Dexie.Table<ITag, number>;
+  memos: Dexie.Table<IMemo, number>;
 
     constructor() {
 
@@ -15,17 +15,16 @@ export class AppDatabase extends Dexie {
 
         //
         // Define tables and indexes
-        // `_id`--> id on the server, will be used for mutations
-        //
+
         db.version(1).stores({
-          jittWords: '++id,_id,&word,kana,eng_translation,eng_definitions,jp_definitions,bookmark,edit,memo,tags',
-          jp_definitions: '++id,_id,wordId,content,source,popularity',
-          eng_definitions: '++id,_id,wordId,content,source,popularity',
-          tags: 'id,_id,&title,description'
+          words: '++id,word_id,&word,kana,translation,tags,bookmark,edit,local,contrib',
+          definitions: '++defId,id,word_id,content,language,source,likes,liked,contrib',
+          tags: '++id,tag_id,&title',
+          memos: 'word_id,content',
         });
         // This will make it possible to call loadDefinitions()
         // directly on retrieved database objects.
-        db.jittWords.mapToClass(JittWord);
+        db.words.mapToClass(JittWord);
     }
 }
 
@@ -33,95 +32,189 @@ export class AppDatabase extends Dexie {
     * the interface of objects stored in the definitions table.
     */
 export interface IDefinition {
+  /** id on local database */
+ defId?: number,
+ /** id on servers */
  id?: number,
- _id?: number,
- wordId?: number,
+ word_id?: number,
  content: string,
  source: string,
- popularity?: number,
- language?: string
+ likes?: number,
+ /** the definition has been liked from this user*/
+ liked?: boolean,
+ language?: string,
+ /** this definition is a contribution*/
+ contrib: boolean
+}
+
+export interface IMemo {
+  word_id: number,
+  content: string
 }
 
 /* Just for code completion and compilation - defines
     * the interface of objects stored in the tags table.
     */
 export interface ITag {
-  _id?: number,
+  tag_id?: number,
   id?: number,
   title: string,
-  description: string
+  description?: string
+}
+
+export interface IJittWord {
+  /**
+   * @var number the local id
+  */
+  id?: number;
+  /**
+   * @var the id on the server
+  */
+  word_id?: number;
+  word: string;
+  kana?: string;
+  translation: string;
+  saved_date: string;
+  tags: ITag[];
+  definitions?: IDefinition[];
 }
 
 /* This is a 'physical' class that is mapped to
     * the jittWords table. We can have methods on it that
     * we could call on retrieved database objects.
     */
-export class JittWord {
-    _id: number; // id on the server
-    id: number;
+export class JittWord implements IJittWord{
+    // properties fetchable from server
+    /** @var int word_id in serever db*/
+    word_id: number; // id on the server
     word: string;
     kana: string;
-    eng_translation: string;
+    translation: string;
+    saved_date: string;
+
+    /** @var int id in local db*/
+    id: number;
+
+    /** @var string the memo content*/
     memo: string;
 
+    /** @var boolean true if the word is a bookmark*/
     bookmark: boolean; // is in the bookmarks
+
+    /** @var boolean true if the word is saved for continued edition */
     edit: boolean;  // still being edited
+
+    /** @var boolean true if the word has never been submitted to jitt servers */
     local: boolean; // never been posted to server
 
+    /** @var boolean true if the word has been submitted to server from this user */
+    contrib: boolean
+
     tags: ITag[]; // retrieval and persisting are handled by dexie
-    jp_definitions: IDefinition[];
-    eng_definitions: IDefinition[];
+    definitions: IDefinition[]; // handled manually
 
-    constructor(word: string, kana: string, eng_translation: string, _id?: number) {
-        this.word = word;
-        this.kana = kana;
-        this.eng_translation = eng_translation;
-        if (_id) this._id = _id;
 
+    constructor() {
         // definitions are to be saved manually, making them non-enumerable
         // will prevent dexie from handling them.
         Object.defineProperties(this, {
-            eng_definitions: {value: [], enumerable: false, writable: true },
-            jp_definitions: {value: [], enumerable: false, writable: true },
+            definitions: {value: [], enumerable: false, writable: true },
             tags: {value: [], enumerable: true, writable: true}
         });
     }
 
-    /**
-     * load the definitions for this word
-    */
-    async loadDefinitions() {
-        [this.eng_definitions, this.jp_definitions] = await Promise.all([
-            db.eng_definitions.where('WordId').equals(this.id).toArray(),
-            db.jp_definitions.where('WordId').equals(this.id).toArray(),
-          ]);
-    }
+    /** Saves or updates the word in to local db*/
+    save(){
+      db.transaction('rw', db.words, db.definitions, async() => {
+        //Insert or update the word
+        if(!this.id){
+          // if no local is set, insert in localdb and get the id
+          // TODO: handle rejections for the next instruction
+          this.id = await db.words.add(this);
 
-    /**
-     * Persist the word and its definitions to local database
-     * return a promise that resoleve with the id of the persisted word
-    */
-    save() {
-        return db.transaction('rw', db.jittWords, db.jp_definitions, db.eng_definitions, async() => {
 
-            // Add or update our selves.
-            // put handle new addition as well as updates
-            // If add, record this.id.
-            this.id = await db.jittWords.put(this);
 
-            // TODO: handle errors here
+          // ... also save its definitions if presents
+          if(this.definitions && this.definitions.length > 0)
             try{
-              await Promise.all ([
-                  Promise.all(this.eng_definitions.map(def => {def.wordId = this.id; db.eng_definitions.put(def)})),
-                  Promise.all(this.jp_definitions.map(def => {def.wordId = this.id; db.jp_definitions.put(def)}))
-              ]);
-            } catch(err){
-              console.log("couldn't save definitions: "+ err);
+              // TODO: move insertion of definitions to its own class method
+              await Promise.all(this.definitions.map(def => {db.definitions.put(def)}))
+            } catch (err){
+              console.log("Error while saving definitions: " + err)
             }
 
-            return this.id;
+        } else { // update the word and its definitions
+          db.words.update(this.id, this);
+          this.updateDefinitions();
+        }
+      })
 
-        });
+      return this.id;
+    }
+
+    /** Sets saved definitions from local db*/
+    async loadDefinitions(){
+        db.definitions.where('word_id')
+          .equals(this.word_id)
+          .toArray(defs => this.definitions = defs)
+    }
+
+    orderDefinitions(){
+      if (this.definitions && this.definitions.length > 0){
+          this.definitions.sort(this.compareDefinitions);
+      }
+    }
+
+    private compareDefinitions(def1, def2){
+      if (parseInt(def1.likes) > parseInt(def2.likes)) {
+          return -1; // def1 comes first
+      } else if (parseInt(def1.likes) < parseInt(def2.likes)){
+          return 1; // def2 comes first
+      } else {
+        return 0; // relative order of def1 and def2 unchanged
+      }
+    }
+
+    loadMemo(){
+      return db.memos
+      .where('word_id')
+      .equals(this.word_id)
+      .first( memo => {
+        if (memo) { this.memo = memo.content };
+      });
+    }
+
+    updateDefinitions(){
+      this.definitions.forEach((def)=>{
+        db.transaction('rw', db.definitions, async() => {
+          db.definitions.where('id')
+            .equals(def.id)
+            .modify(def)
+            .catch(Dexie.ModifyError, (e) => {
+              // that definitions doesn't exist in localdb
+              console.log("failed to modify definition " + e)
+              console.log("Trying to save definitions...");
+              // Try to persist it
+              db.definitions.put(def).then(() => console.log("Succeded"));
+            })
+        })
+      })
+
+    }
+
+    /** @return Json object of the properties needed for submition*/
+    toJson(){
+      let json = <IJittWord>{};
+
+      json.word = this.word;
+      json.kana = this.kana;
+      json.translation = this.translation;
+
+      json.tags = this.tags;
+      json.definitions = this.definitions;
+
+      return json;
+
     }
 
 }

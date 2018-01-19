@@ -1,0 +1,30 @@
+<ion-content padding>
+  <h2 text-center>{{word.word}}</h2>
+  <ion-list>
+    <ion-item>
+       <ion-label stacked>{{'CONTRIB.DEF-LABEL.DEF-CONTENT' | translate}}</ion-label>
+       <ion-input type="text" [(ngModel)]="def.content" name="content"></ion-input>
+    </ion-item>
+
+    <ion-item>
+       <ion-label stacked>{{'CONTRIB.DEF-LABEL.DEF-SOURCE' | translate}}</ion-label>
+       <ion-input type="text" [(ngModel)]="def.source" name="source"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label><small>{{'CONTRIB.DEF-LABEL.DEF-LANGUAGE' | translate}}</small></ion-label>
+      <ion-select multiple="false" name="language" [(ngModel)]="def.language">
+       <ion-option value="english">English</ion-option>
+       <ion-option value="japanese">日本語</ion-option>
+      </ion-select>
+    </ion-item>
+  <ion-item text-right>
+    <button (click)="onCancelDefinition()" ion-button type="button" color="divider-color" outline>
+      {{'CONTRIB.DEF-LABEL.DEF-CANCEL-BTN' | translate}}
+    </button>
+    <button (click)="onSaveDefinition()" ion-button type="button" color="accent-color" outline>
+      {{'CONTRIB.DEF-LABEL.DEF-SAVE-BTN' | translate}}
+    </button>
+  </ion-item>
+  </ion-list>
+</ion-content>

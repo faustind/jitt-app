@@ -4,17 +4,24 @@
       <button ion-button menuToggle left>
        <ion-icon name="menu"></ion-icon>
      </button>
-      <ion-title>Dictionary</ion-title>
+      <ion-title>{{'SEARCH.TITLE' | translate}}</ion-title>
 
       <ion-buttons end>
-        <button ion-button icon-only large color="white">
+        <button ion-button icon-only large color="white"
+          (click)="showDefinitionForm()">
+          <ion-icon name="md-add"></ion-icon>
+        </button>
+        <button ion-button icon-only large color="white"
+          (click)="toogleBookmark()">
           <ion-icon name="md-bookmark"></ion-icon>
         </button>
-        <button ion-button icon-only large color="white">
+        <button ion-button icon-only large color="white"
+         (click)="showMemoForm()">
           <ion-icon name="md-clipboard"></ion-icon>
         </button>
-        <button ion-button icon-only large color="white">
-          <ion-icon name="md-add"></ion-icon>
+        <button ion-button icon-only large color="white"
+          (click)="showOptions()">
+          <ion-icon name="md-options"></ion-icon>
         </button>
       </ion-buttons>
     </ion-navbar>
@@ -24,6 +31,7 @@
 
     <ion-toolbar color="light">
       <ion-searchbar
+        placeholder="{{'SEARCH.SRCH-PLACEHOLDER' | translate}}"
         animated
         [(ngModel)]="searchedWord"
         (keyup)="onInput($event)"
@@ -34,7 +42,7 @@
       <!-- result list -->
       <ion-list padding-bottom>
           <word-item
-            *ngFor="let wd of result$ | async"
+            *ngFor="let wd of results"
             [class.selected]="wd === selectedResult"
             [word]='wd'
             (click)="onSelectWord(wd)">

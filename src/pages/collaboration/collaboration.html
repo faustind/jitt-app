@@ -5,21 +5,9 @@
       <ion-icon name="menu"></ion-icon>
     </button>
     <ion-title>
-       Collaboration
+      {{'CONTRIB.TITLE' | translate}}
      </ion-title>
-     <!-- collaboration menu -->
-    <ion-buttons end>
-      <button ion-button icon-only large rounded outline color="white"
-        (click)="toggleContinueLater()">
-          <!-- <ion-badge>{{continueLatersTotal}}</ion-badge> -->
-          <ion-icon name="logo-buffer" [isActive]=" showContinueLater"></ion-icon>
-      </button>
 
-      <button ion-button icon-only large rounded outline color="white" (click)="showUserDetails()">
-        <ion-icon name="md-information-circle"></ion-icon>
-      </button>
-    </ion-buttons>
-     <!-- End collaboration menu -->
    </ion-navbar>
  </ion-header>
 
@@ -27,7 +15,7 @@
      <ion-toolbar color="light">
        <!-- field to add new words -->
        <ion-item class="add-bar" fixed-top>
-          <ion-input [(ngModel)]="inputWord" type="text" placeholder="Add word..." (keyup)="onKeyUp($event)"></ion-input>
+          <ion-input [(ngModel)]="inputWord" type="text" placeholder="{{'CONTRIB.ADD-BAR-PLACEHOLDER' | translate}}" (keyup)="onKeyUp($event)"></ion-input>
           <button ion-button item-end (click)="addToEditList()">
             <ion-icon name="md-add"></ion-icon>
           </button>

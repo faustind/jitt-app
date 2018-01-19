@@ -1,12 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import {IDefinition } from '../../providers/db/db';
 
-/**
- * Generated class for the DefinitionLanguageGroupComponent component.
- *
- * See https://angular.io/api/core/Component for more info on Angular
- * Components.
- */
+
 @Component({
   selector: 'definition-language-group',
   templateUrl: 'definition-language-group.html'
@@ -29,11 +24,22 @@ export class DefinitionLanguageGroupComponent implements OnInit {
   constructor() { }
 
   ngOnInit(){
-    console.log(this.language);
+    //console.log(this.language);
     this.setContent();
   }
 
+  compareDefinitions(def1, def2){
+    if ( parseInt(def1.likes) > parseInt(def2.likes)) {
+        return -1; // def1 comes first
+    } else if (parseInt(def1.likes) < parseInt(def2.likes)){
+        return 1; // def2 comes first
+    } else {
+      return 0; // relative order of def1 and def2 unchanged
+    }
+  }
+
   setContent(): void{
+    //this.definitions.sort(this.compareDefinitions)
     console.log("definition-language-group.setContent()");
     if(this.language === DefinitionLanguageGroupComponent.ENGLISH){
       this.title = "English";

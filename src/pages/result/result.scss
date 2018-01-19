@@ -6,12 +6,16 @@
 //   margin-top: 50px;
 // }
 
-word-item.selected .item-inner{
+word-item.selected ion-item{
   background-color: rgba(94, 125, 155, 0.3);
 }
 
-word-item:hover .item-inner{
+word-item:hover ion-item{
   background-color: rgba(94, 125, 155, 0.1);
+}
+
+item-inner{
+  background-color: inherit;
 }
 
 

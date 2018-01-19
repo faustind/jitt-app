@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { NavController, MenuController, AlertController, ToastController } from 'ionic-angular';
 
 import { dbProvider } from '../../providers/db/db.provider';
+import { ApiProvider } from '../../providers/api/api.provider'
 import { JittWord } from '../../providers/db/db'
 
 import { TAGS } from '../../entities/mock-data'
@@ -55,7 +56,7 @@ export class CollaborationPage {
   */
   addToEditList(){
     if (this.inputWord.trim() !== ''){
-      this.wordToAdd = new JittWord('', '', '');
+      this.wordToAdd = new JittWord();
       this.wordToAdd.word = this.inputWord;
       //push the word object to edit list
       this.editList.push(this.wordToAdd);

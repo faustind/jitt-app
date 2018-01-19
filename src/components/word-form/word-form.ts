@@ -2,13 +2,13 @@ import { Component, EventEmitter, Input, Output, OnChanges } from '@angular/core
 import { FormBuilder, FormGroup, FormArray} from '@angular/forms';
 import { ToastController, AlertController } from 'ionic-angular';
 
-
-import { TAGS } from '../../entities/mock-data'
+import { ApiProvider } from '../../providers/api/api.provider'
 import { JittWord, IDefinition, ITag} from '../../providers/db/db'
 
 @Component({
   selector: 'word-form',
-  templateUrl: 'word-form.html'
+  templateUrl: 'word-form.html',
+  providers: [ ApiProvider ]
 })
 export class WordFormComponent implements OnChanges{
 
@@ -16,16 +16,20 @@ export class WordFormComponent implements OnChanges{
 
   @Output() onUpdatedWordInput = new EventEmitter<JittWord>();
 
-  TAGS = TAGS;
+  TAGS = [];
   wordForm: FormGroup;
 
 
   constructor(
     private fb: FormBuilder,
     public toastCtrl: ToastController,
-    public alertCtrl: AlertController
+    public alertCtrl: AlertController,
+    private api: ApiProvider
   ){
     this.createForm();
+    // Set tags from server as tag option
+    this.api.getTags().then(tags => this.TAGS = tags);
+    //TODO: fall back to fetch tags from local on failure
   }
 
   ngOnChanges(){
@@ -37,7 +41,7 @@ export class WordFormComponent implements OnChanges{
     this.wordForm = this.fb.group({
       word: '',
       kana: '',
-      eng_translation: '',
+      translation: '',
       definitions: this.fb.array([]),
       tags: [],
     })
@@ -47,11 +51,11 @@ export class WordFormComponent implements OnChanges{
     this.wordForm.reset({
       word: this.wordInput.word || '',
       kana: this.wordInput.kana || '',
-      eng_translation: this.wordInput.eng_translation || '',
+      translation: this.wordInput.translation || '',
     })
     this.wordForm.get('tags').setValue(this.wordInput.tags || [])
-    if(this.wordInput.eng_definitions || this.wordInput.jp_definitions){
-      const dfs = this.wordInput.eng_definitions.concat(this.wordInput.jp_definitions)
+    if(this.wordInput.definitions){
+      const dfs = this.wordInput.definitions
       this.setDefinitions(dfs)
     }
   }
@@ -114,24 +118,17 @@ export class WordFormComponent implements OnChanges{
       (tag) => { return Object.assign({}, tag)}
     );
 
-    const engDefinitionsDeepCopy: IDefinition[] = wordFormValue.definitions.filter(
-      definition => {return definition.language.includes("english")}
-    );
-    const jpDefinitionsDeepCopy: IDefinition[] = wordFormValue.definitions.filter(
-      definition => {return definition.language.includes("japanese")}
-    );
+    const definitionsDeepCopy: IDefinition[] = wordFormValue.definitions;
+
 
     console.log(tagsDeepCopy);
 
-    const persistWord = new JittWord(
-      wordFormValue.word as string,
-      wordFormValue.kana as string,
-      wordFormValue.eng_translation as string
-    );
+    const persistWord = new JittWord();
+    persistWord.word = wordFormValue.word as string,
+    persistWord.kana = wordFormValue.kana as string,
+    persistWord.translation = wordFormValue.translation as string
 
-    //TODO: add source field to FormGroup
-    persistWord.jp_definitions = persistWord.jp_definitions.concat(jpDefinitionsDeepCopy);
-    persistWord.eng_definitions =  persistWord.eng_definitions.concat(engDefinitionsDeepCopy);
+    persistWord.definitions = persistWord.definitions.concat(definitionsDeepCopy);
     persistWord.tags = persistWord.tags.concat(tagsDeepCopy);
 
     return persistWord;
@@ -146,23 +143,29 @@ export class WordFormComponent implements OnChanges{
   }
 
   /**
-  * save the word for continued edition
-  */
-  onContinueLater(){
-    let toSave = this.preparePersistWord();
-    toSave.edit = true;
-    toSave.save()
-      .then(id => this.presentToast(`You successfuly added ${toSave.word} to your stack`))
-      .catch( err => console.log("error while saving word" + err) );
-  }
-
-  /**
    * submit the word to the jitt server
   */
   onSubmit(){
     // submit to server
-    // update words and definitons with ids from the server
-    // save word and its definitions
+    let toSave = this.preparePersistWord();
+
+    console.log("submiting word :");
+
+    this.api.submitWord(toSave)
+    .then(wordSubmited => {
+      // has been saved
+      console.log("word has been submited"); console.log(wordSubmited);
+      // Mark it as a contribution
+      wordSubmited.contrib = true;
+      // Save it to locals
+
+      this.confirmSaveLocal(wordSubmited);
+      // notify user
+    })
+    .catch(err => {
+      // couldn't be saved
+      // notify
+    })
   }
 
 
@@ -173,9 +176,8 @@ export class WordFormComponent implements OnChanges{
   onSaveLocal(){
     let toSave = this.preparePersistWord();
     toSave.local = true;
-    toSave.save()
-      .then(id => this.presentToast(`You successfuly saved ${toSave.word} to your dictionary`))
-      .catch( err => console.log("error while saving word" + err) );
+    console.log("save local :");
+    console.log(toSave);
   }
 
   presentToast(message: string){
@@ -226,6 +228,28 @@ export class WordFormComponent implements OnChanges{
       alert.present();
     }
 
+  confirmSaveLocal(wordSubmited: JittWord) {
+  let alert = this.alertCtrl.create({
+    title: 'Keep your contribution',
+    message: 'Do you want to save this word locally ?',
+    buttons: [
+      {
+        text: 'Nope',
+        role: 'cancel',
+        handler: () => {
+          console.log('Cancel clicked');
+        }
+      },
+      {
+        text: 'Yeah',
+        handler: () => {
+            wordSubmited.save();;
+        }
+      }
+    ]
+  });
+  alert.present();
+}
 
   /** compareFn for tags control */
   tagsControl(t1: ITag, t2: ITag): boolean {
