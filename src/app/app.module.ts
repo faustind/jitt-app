@@ -14,17 +14,11 @@ import { dbProvider } from '../providers/db/db.provider';
 import { ApiProvider } from '../providers/api/api.provider';
 
 import { MyApp } from './app.component';
-// import { HomePage } from '../pages/home/home';
 import { ResultPage } from '../pages/result/result';
 import { TabsPage } from '../pages/tabs/tabs';
 import { CollaborationPage } from '../pages/collaboration/collaboration';
 import { BookmarkPage } from '../pages/bookmark/bookmark';
-// import { SettingsPage } from '../pages/settings/settings';
-// import { SearchSettingsPage } from '../pages/settings/search/search';
-//
-// import { LocalSettingsPage } from '../pages/settings/local/local';
-// import { ContribSettingsPage } from '../pages/settings/contrib/contrib';
-// import { AboutPage } from '../pages/about/about';
+
 
 import { MemoFormComponent } from '../components/memo-form/memo-form';
 import { OptionsFormComponent } from '../components/options-form/options-form'
