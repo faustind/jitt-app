@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
-import { NavController, MenuController, AlertController, ToastController } from 'ionic-angular';
+import { NavController, MenuController, AlertController, ToastController, PopoverController } from 'ionic-angular';
+
+import { OptionsFormComponent } from '../../components/options-form/options-form';
 
 import { dbProvider } from '../../providers/db/db.provider';
 import { ApiProvider } from '../../providers/api/api.provider'
@@ -43,7 +45,8 @@ export class CollaborationPage {
     public MenuCtrl: MenuController,
     public alertCtrl: AlertController,
     private localDb: dbProvider,
-    public toastCtrl: ToastController
+    public toastCtrl: ToastController,
+    public popoverCtrl: PopoverController,
   ) { }
 
   ionViewDidEnter(){
@@ -151,4 +154,8 @@ export class CollaborationPage {
     this.editList[this.editedWordIndex] = editedWord;
   }
 
+  showOptions(){
+    let optionsPopover = this.popoverCtrl.create(OptionsFormComponent);
+  optionsPopover.present();
+  }
 }
